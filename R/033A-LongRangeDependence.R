@@ -47,7 +47,7 @@
 
 ################################################################################
 # PART II: Reimplemented functions from
-#	Beran's SPlus Scripts
+#   Beran's SPlus Scripts
 # FUNCTIONS:          DESCRIPTION:
 #  farimaTrueacf       Returns FARMA true autocorrelation function
 #  farimaTruefft       Returns FARMA true fast Fourier transform
@@ -1092,7 +1092,7 @@ function(n, H)
 fgnTrueacf = 
 function(n, H)
 {
-	.ckFGN0(n = n, H = H)
+    .ckFGN0(n = n, H = H)
 }
 
 
@@ -1137,7 +1137,7 @@ function(n, H)
 fgnTruefft = 
 function(n, H)
 {
-	.gkFGN0(n = n, H = H)
+    .gkFGN0(n = n, H = H)
 }
 
 
@@ -1245,7 +1245,7 @@ function(n, H)
 farimaTrueacf = 
 function(n, H)
 {
-	.ckFARIMA0(n = n, H = H)
+    .ckFARIMA0(n = n, H = H)
 }
 
 
@@ -1289,7 +1289,7 @@ function(n, H)
 farimaTruefft = 
 function(n, H)
 {
-	.gkFARIMA0(n = n, H = H)
+    .gkFARIMA0(n = n, H = H)
 }
 
 
@@ -3321,7 +3321,7 @@ function(LengthH, DataLength, bc = c("periodic", "symmetric"))
 
 .beranTest =
 function()
-{	# A function implemented by Diethelm Wuertz
+{   # A function implemented by Diethelm Wuertz
 
     # Result:
     ans = NA
@@ -3443,7 +3443,7 @@ function(x, q)
 }
 
 
-# ******************************************************************************
+################################################################################
 # Slider:
 
 
@@ -3475,25 +3475,25 @@ function(x = fgnSim())
         
         # Fit:
         if (method == 1) ans = aggvarFit(x = x, levels = levels, 
-        	minnpts = minnpts, cut.off = 10^c(lower, lower+range), 
-        	doplot = TRUE)
+            minnpts = minnpts, cut.off = 10^c(lower, lower+range), 
+            doplot = TRUE)
         if (method == 2) ans = diffvarFit(x = x, levels = levels, 
-        	minnpts = minnpts, cut.off = 10^c(lower, lower+range), 
-        	doplot = TRUE)
+            minnpts = minnpts, cut.off = 10^c(lower, lower+range), 
+            doplot = TRUE)
         if (method == 3) ans = absvalFit(x = x, levels = levels, 
-        	minnpts = minnpts, cut.off = 10^c(lower, lower+range), 
-        	doplot = TRUE)
+            minnpts = minnpts, cut.off = 10^c(lower, lower+range), 
+            doplot = TRUE)
         if (method == 4) ans = higuchiFit(x = x, levels = levels, 
-        	minnpts = minnpts, cut.off = 10^c(lower, lower+range), 
-        	doplot = TRUE)
+            minnpts = minnpts, cut.off = 10^c(lower, lower+range), 
+            doplot = TRUE)
         if (method == 5) ans = pengFit(x = x, levels = levels, 
-        	minnpts = minnpts, cut.off = 10^c(lower, lower+range), 
-        	method = "mean", doplot = TRUE)
+            minnpts = minnpts, cut.off = 10^c(lower, lower+range), 
+            method = "mean", doplot = TRUE)
         if (method == 6) ans = rsFit(x = x, levels = levels, 
-        	minnpts = minnpts, cut.off = 10^c(lower, lower+range), 
-        	method = "mean", doplot = TRUE)
+            minnpts = minnpts, cut.off = 10^c(lower, lower+range), 
+            method = "mean", doplot = TRUE)
         if (method >= 7) ans = perFit(x = x, cut.off = lower, 
-        	doplot = TRUE)
+            doplot = TRUE)
         # ...
         
         # Plot:
@@ -3501,15 +3501,15 @@ function(x = fgnSim())
         
         # Add Text:
         if (method <= 7)
-        	mtext(text = paste(
-	        	"levels = ", levels, " | ",
-	        	"minnpts = ", minnpts, " | ",
-	        	"cut.off = 10^[", lower, ", ", lower+range, "]",
-	        	sep = ""), line = -1.5, side = 3, cex = 0.8)
-	    if (method == 7)
-        	mtext(text = paste(
-	        	"cut.off = ", lower,
-	        	sep = ""), line = -1.5, side = 3, cex = 0.8)
+            mtext(text = paste(
+                "levels = ", levels, " | ",
+                "minnpts = ", minnpts, " | ",
+                "cut.off = 10^[", lower, ", ", lower+range, "]",
+                sep = ""), line = -1.5, side = 3, cex = 0.8)
+        if (method == 7)
+            mtext(text = paste(
+                "cut.off = ", lower,
+                sep = ""), line = -1.5, side = 3, cex = 0.8)
                            
         # Reset Frame:
         par(mfrow = c(1, 1), cex = 0.7)

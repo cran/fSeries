@@ -62,12 +62,12 @@
 
 # ------------------------------------------------------------------------------
 # Rmetrics/SPlus Notation:
-#	armaSim(model = list(ar = c(0.5, -0.5), d = 0, ma = 0.1), n = 100,
-#		innov = NULL, n.start = 100, start.innov = NULL, 
-#		rand.gen = rnorm, rseed = NULL, ...) 
+#   armaSim(model = list(ar = c(0.5, -0.5), d = 0, ma = 0.1), n = 100,
+#       innov = NULL, n.start = 100, start.innov = NULL, 
+#       rand.gen = rnorm, rseed = NULL, ...) 
 #   arima.sim (model, n = 100, 
-#		innov = rand.gen(n, ...), n.start = 100, start.innov = NULL, 
-#		rand.gen = rnorm, xreg = NULL, reg.coef = NULL, ...)
+#       innov = rand.gen(n, ...), n.start = 100, start.innov = NULL, 
+#       rand.gen = rnorm, xreg = NULL, reg.coef = NULL, ...)
 
        
 ################################################################################
@@ -214,10 +214,10 @@ rseed = NULL, ...)
     ans = as.ts(x)
     control = c(ar = model$ar, d = model$d, ma = model$ma)
     Names = names(control)
-	control = as.character(c(control, substitute(rand.gen)))
-	names(control) = c(Names, "rand.gen")
-	attr(ans, "control") = control
-    	
+    control = as.character(c(control, substitute(rand.gen)))
+    names(control) = c(Names, "rand.gen")
+    attr(ans, "control") = control
+        
     # Return Value:
     ans
 }
@@ -312,13 +312,13 @@ title = NULL, description = NULL, ...)
     if (tsmodel == "ar") {
         order = as.integer(order) 
         if (method[1] == "CSS-ML" | method[1] == "CSS" | method[1] == "ML") {
-        	p = order
-        	q = 0
-        	d = 0
-        	order = c(p, d, q)
-        	tsmodel = "arima"
-    	}
-	}
+            p = order
+            q = 0
+            d = 0
+            order = c(p, d, q)
+            tsmodel = "arima"
+        }
+    }
      
     if (tsmodel == "fracdiff") {
         pos = regexpr(",", order)
@@ -395,10 +395,10 @@ method = c("yw", "burg1", "burg2", "ols", "mle"), M = NULL, h = NULL, ...)
     
     # Coefficients:
     if (method == "ols") {
-	    fit$coef = fit$ar[,,1]
+        fit$coef = fit$ar[,,1]
     } else {
-    	fit$coef = fit$ar
-	}
+        fit$coef = fit$ar
+    }
     names(fit$coef) = c(paste("ar", 1:order, sep=""))
     
     if (include.mean) {
@@ -441,9 +441,9 @@ function (x, order, include.mean, fixed,
 method = c("CSS-ML", "ML", "CSS"), M = NULL, h = NULL, ...) 
 {
     # Internal Function: arima
-	# Use: stats ...
+    # Use: stats ...
 
-	# Fit:
+    # Fit:
     call = match.call()
     fit = arima(x = x, order = order, method=  method[1], 
         include.mean = include.mean, fixed = fixed, ...) 
@@ -451,7 +451,7 @@ method = c("CSS-ML", "ML", "CSS"), M = NULL, h = NULL, ...)
     # Added:
     fit$tstitle = paste("ARIMA(", 
         as.character(order[1]), ",", as.character(order[2]), ",",
-        as.character(order[3]), ") with method: ", method[1], sep="")
+        as.character(order[3]), ") with method: ", method[1], sep = "")
     fit$x = x   
     fit$fitted.values = fit$x - fit$residuals
     fit$se.coef = sqrt(diag(fit$var.coef))  
@@ -477,7 +477,7 @@ function (x, order, include.mean, fixed, method = "FRACDIFF", M = 100, h = -1)
         
     # Added:
     fit$tstitle = paste("FRACDIFF(", as.character(order[1]), ",", 
-        as.character(order[2]), ") with method: ", method[1], sep="")
+        as.character(order[2]), ") with method: ", method[1], sep = "")
     fit$x = x   
         fit$coef = c(fit$d, fit$ar, fit$ma)
     namesCoef = "d"
@@ -507,10 +507,10 @@ function (x, order, include.mean, fixed, method = "FRACDIFF", M = 100, h = -1)
 function(x, nar = 0, nma = 0, ar = rep(NA, max(nar, 1)), 
 ma = rep(NA, max(nma, 1)), dtol = NULL, drange = c(0, 0.5), h = -1, M = 100) 
 {     
-	# Internal Function: 
-	# Use: fracdiff ...
+    # Internal Function: 
+    # Use: fracdiff ...
 
-	# A Builtin Copy from R's fracdiff Package 
+    # A Builtin Copy from R's fracdiff Package 
     # Arguments:
     #   x      - time series for the ARIMA model
     #   nar    - number of autoregressive parameters
@@ -716,7 +716,7 @@ function (object, n.ahead, se.fit = TRUE, ...)
     if (object$tsmodel == "ar") { 
         class(object) = "ar"
         result = predict(object = object, newdata = object$x, 
-        	n.ahead = n.ahead, se.fit = se.fit, ...)   
+            n.ahead = n.ahead, se.fit = se.fit, ...)   
     }    
     
     # Predict "arima"
