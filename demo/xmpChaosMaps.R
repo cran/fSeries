@@ -22,36 +22,33 @@
 #
 
 
-# ------------------------------------------------------------------------------
+################################################################################
+# Requirements:
 
 
-#
-# Package Information:
-#
-#   Package: odesolve
-#   Version: 0.5-10
-#   Date: 2004/04/05
-#   Title: Solvers for Ordinary Differential Equations
-#   Author: R. Woodrow Setzer <setzer.woodrow@epa.gov>
-#   Maintainer: R. Woodrow Setzer <setzer.woodrow@epa.gov>
-#   Depends: R (>= 1.4.0)
-#   Description: This package provides an interface for the ODE solver lsoda.  
-#       ODEs are expressed as R functions or as compiled code.    
-#   License: GPL version 2 
-#
+	# Package Information:
+	#
+	#   Package: odesolve
+	#   Version: 0.5-10
+	#   Date: 2004/04/05
+	#   Title: Solvers for Ordinary Differential Equations
+	#   Author: R. Woodrow Setzer <setzer.woodrow@epa.gov>
+	#   Maintainer: R. Woodrow Setzer <setzer.woodrow@epa.gov>
+	#   Depends: R (>= 1.4.0)
+	#   Description: This package provides an interface for the ODE solver lsoda.  
+	#       ODEs are expressed as R functions or as compiled code.    
+	#   License: GPL version 2 
 
 
-# ------------------------------------------------------------------------------
+################################################################################
+# Chaotic Maps:
 
-
-# Examples:
-
+	
 	# The functions can be found in "fSeries.R"
-
 	# Plot Henon Map:
 	x = henonMap(5000)
 	plot(x, col = "steelblue4", main = "Henon Map")
 
 
-# ------------------------------------------------------------------------------
+################################################################################
 

@@ -1,6 +1,6 @@
-\name{technicalAnalysis}
+\name{TechnicalAnalysis}
 
-\alias{technicalAnalysis}
+\alias{TechnicalAnalysis}
 
 \alias{emaTA}
 \alias{biasTA}
@@ -31,53 +31,33 @@
 
 \description{
 
-	A collection of functions for the technical analysis of stock markets. 
-	This collection provides a set of the most common technical indicators 
-	together with functions for open--high--close--low charts, and three 
-	functions for benchmark measurements.
+	A collection and description of functions for the technical 
+	analysis of stock markets. The collection provides a set of 
+	the most common technical indicators.
 	\cr
 	
 	The functions are:
 	
-	\tabular{rll}{
-	 	1	\tab 	\code{emaTA}			
-	 		\tab 	Exponential Moving Average, \cr
-	 	2	\tab	\code{biasTA}			
-	 		\tab 	Bias Indicator, \cr
-	 	3	\tab	\code{medpriceTA}		
-	 		\tab 	Medium Price Indicator, \cr
-	 	4	\tab	\code{typicalpriceTA} 	
-	 		\tab 	Typical Price Indicator, \cr
-	 	5	\tab	\code{wcloseTA}		
-	 		\tab 	Weighted Close Indicator, \cr
-	 	6	\tab	\code{rocTA}		
-	 		\tab 	Rate of Change, \cr
-	 	7	\tab	\code{oscTA}			
-	 		\tab 	Oscillator Indicator, \cr
-	 	8	\tab	\code{momTA}			
-	 		\tab 	Momentum Indicator, \cr
-	 	9	\tab	\code{macdTA}			
-	 		\tab 	MACD Indicator, \cr
-	   10	\tab	\code{cdsTA}		
-	   		\tab 	MACD Signal Line, \cr
-	   11	\tab	\code{cdoTA}			
-	   		\tab 	MACD Oscillator, \cr
-	   12	\tab	\code{vohlTA}			
-	   		\tab 	High/Low Volatility, \cr
-	   13	\tab	\code{vorTA}			
-	   		\tab 	Volatility Ratio, \cr
-	   14	\tab	\code{fpkTA}		
-	   		\tab 	Fast Percent K, \cr
-	   15	\tab	\code{fpdTA}			
-	   		\tab 	Fast Percent D, \cr
-	   16	\tab	\code{spdTA}		
-	   		\tab 	Slow Percent D, \cr
-	   17	\tab	\code{apdTA}		
-	   		\tab 	Averaged Percent D, \cr
-	   18	\tab	\code{wprTA}		
-	   		\tab 	William's Percent R, \cr
-	   19	\tab	\code{rsiTA}		
-	   		\tab 	Relative Strength Index. }
+	\tabular{ll}{
+	\code{emaTA} \tab Exponential Moving Average, \cr
+	\code{biasTA} \tab Bias Indicator, \cr
+	\code{medpriceTA} \tab Medium Price Indicator, \cr
+	\code{typicalpriceTA} \tab Typical Price Indicator, \cr
+	\code{wcloseTA}	\tab Weighted Close Indicator, \cr
+	\code{rocTA} \tab Rate of Change, \cr
+	\code{oscTA} \tab Oscillator Indicator, \cr
+	\code{momTA} \tab Momentum Indicator, \cr
+	\code{macdTA} \tab MACD Indicator, \cr
+	\code{cdsTA} \tab MACD Signal Line, \cr
+	\code{cdoTA} \tab MACD Oscillator, \cr
+	\code{vohlTA} \tab High/Low Volatility, \cr
+	\code{vorTA} \tab Volatility Ratio, \cr
+	\code{fpkTA} \tab Fast Percent K, \cr
+	\code{fpdTA} \tab Fast Percent D, \cr
+	\code{spdTA} \tab Slow Percent D, \cr
+	\code{apdTA} \tab Averaged Percent D, \cr
+	\code{wprTA} \tab William's Percent R, \cr
+	\code{rsiTA} \tab Relative Strength Index. }
 	
 }
 
@@ -160,7 +140,7 @@ wcloseTA(high, low, close)
 
 \author{
 
-	Diethelm Wuertz for this \R-port.
+	Diethelm Wuertz for the Rmetrics \R-port.
 }
 
 

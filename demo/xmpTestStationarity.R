@@ -1,48 +1,56 @@
 
 #
 # Example: 
-#	Perorm a Augmented Dickey - Fuller Unit Root Test, a 
-#	Phillips - Perron Unit Root Test and a KPSS Test for 
-#	Stationarity
+#	Unit Root and Stationarit Tests
+#
+# Description:
+#   These examples show how to perform the Augmented Dickey-Fuller unit 
+#	root test, the Phillips-Perron unit root test and the KPSS test for 
+#	stationarity using wrapper functions based on functions from Adrian 
+#   Trapletti's 'tseries package.
 #
 # Author:
 #	(C) 2002, Diethelm Wuertz, GPL
 #
 
 
-# ------------------------------------------------------------------------------
+################################################################################
+# Tests:
 
 	
-# Augmented Dickey - Fuller Test:	
-	
+	# Augmented Dickey - Fuller Test:		
 	# A time series which contains no unit root:
 	x = rnorm(1000)  
-	adfTest(x)
+	tsadfTest(x)
 	# A time series which contains a unit-root:
 	y = diffinv(x)
-	adfTest(y)
-	Continue = readline("Press any key > ")
+	tsadfTest(y)
+	###
 	
-# Phillips - Perron Unit Root Test:
-
+	
+	# Phillips - Perron Unit Root Test:
 	# A time series which contains no unit root:
 	x = rnorm(1000)
-	ppTest(x)
+	tsppTest(x)
 	# A time series which contains a unit-root:
 	y = cumsum(x)  
-	ppTest(y)
-	Continue = readline("Press any key > ")
+	tsppTest(y)
+	###
 	
-# KPSS Test for Stationarity:
-
+		
+	# KPSS Test for Stationarity:
 	# A time series which is level stationary:
 	x = rnorm(1000)
-	kpssTest(x)
+	tskpssTest(x)
 	# A time series which contains a unit-root:
 	y = cumsum(x)
-	kpssTest(y)
+	tskpssTest(y)
 	# A time series which is trend stationary:
 	x = 0.3*(1:1000)+rnorm(1000)
-	kpssTest(x, null = "Trend")
+	tskpssTest(x, null = "Trend")
+	###
+
+
+################################################################################
 
 	 

@@ -1,19 +1,26 @@
 
 #
-# fSeries Functions Addon:
+# Example:
+# 	fSeries Functions Addons
 #
-#   1 Aparch Time Series Simulation
-#   2 Chaotic Time Series Maps
-#   3 Absolute Moment Statistics
-#   4 Garch Ox Interface
-#   5 Missing Data Manipulations
-#   6 OLS Functions
-#   7 Moving Averages
-#   8 Time Series Filter
-#   9 Additional Trading Indicators
+# Description:
+#	This is a collection of frunctions which support the following
+#	tasks:
+#    1 Aparch Time Series Simulation
+#    2 Chaotic Time Series Maps
+#    3 Absolute Moment Statistics
+#    4 Garch Ox Interface
+#    5 Missing Data Manipulations
+#    6 OLS Functions
+#    7 Moving Averages
+#    8 Time Series Filter
+#    9 Additional Trading Indicators
+#   10 Lagged or leading vector/matrix of selected order(s)
+#   11 Regressor matrix for polynomial distributed lags
+#   12 Time series disaggregation from low to high frequency
 #
 # Author:
-#   Diethelm Wuertz, GPL
+#   (C) 2002, Diethelm Wuertz, GPL
 #
 
 
@@ -645,7 +652,7 @@ function(object)
 #  removeNA       Remove NAs from a matrix object
 #  subtituteNA     Substitute NAs by zeroes, the column mean or median
 #  interpNA        Interpolate NAs using R's "approx" function
-#  knnNA              Impute NAs by the "knn"-Algorithm from EMV package
+#  knnNA           Impute NAs by the "knn"-Algorithm from EMV package
 ################################################################################
 
 
@@ -898,7 +905,7 @@ summary.OLS = function(object, ...)
 
 ################################################################################
 # FUNCTION:       DESCRIPTION:
-#  SMA            Compute Simple Moving Average           
+#  SMA             Compute Simple Moving Average           
 #  EWMA            Compute Exponentially Weighted  Moving Average
 ################################################################################
 
@@ -1017,99 +1024,99 @@ function(y, lambda = 1600)
 
 
 ################################################################################
-# FUNCTION:
-#  accelTA
-#  adiTA
-#  adoscillatorTA
-#  bollingerTA
-#  chaikinoTA
-#  chaikinvTA
-#  garmanKlassTA
-#  macdTA
-#  medpriceTA
-#  momentumTA
-#  nviTA
-#  obvTA
-#  pviTA
-#  pvtrendTA
-#  rocTA
-#  rsiTA
-#  stochasticTA
-#  typicalPriceTA
-#  wcloseTA
-#  williamsadTA
-#  williamsrTA
+# FUNCTION:            DESCRIPTION:
+#  accelTA              Acceleration
+#  adiTA                AD Indicator      
+#  adoscillatorTA       AD Oscillator
+#  bollingerTA          Bollinger Bands
+#  chaikinoTA           Chaikin Oscillator
+#  chaikinvTA           Chaikin Volatility
+#  garmanKlassTA        Garman-Klass Volatility
+#  macdTA               MACD
+#  medpriceTA           Median Price
+#  momentumTA           Momentum
+#  nviTA                Negative Volume Index
+#  obvTA                On Balance Volume
+#  pviTA                Positive Volume Index
+#  pvtrendTA            Price-Volume Trend
+#  rocTA                RateOfChange
+#  rsiTA                Relative Strength Index
+#  stochasticTA         Stochastic Oscillator
+#  typicalPriceTA       Typical Price
+#  wcloseTA             Weighted Close
+#  williamsadTA         Williams AD
+#  williamsrTA          Williams R%
 ################################################################################
 
 
 accelTA = 
 function(x, n = 12, trim = TRUE) 
 {
-	# FUNCTION:
-	
-	# Indicator:
-	accel = diff( x[(n+1):length(x)]-x[1:(length(x)-n)] )  
-	if (!trim) accel = c(rep(NA, n+1), accel)
-	
-	# Return Value:
-	accel 
-}	
+    # FUNCTION:
+    
+    # Indicator:
+    accel = diff( x[(n+1):length(x)]-x[1:(length(x)-n)] )  
+    if (!trim) accel = c(rep(NA, n+1), accel)
+    
+    # Return Value:
+    accel 
+}   
 
 
 # ------------------------------------------------------------------------------
-	
-	
+    
+    
 adiTA = 
 function(high, low, close, volume) 
 {
-	# FUNCTION:
-	
-	# Indicator:
-	adi = cumsum((2 * close - high - low) / (high - low) * volume) 
-	
-	# Return Value:
-	adi 
+    # FUNCTION:
+    
+    # Indicator:
+    adi = cumsum((2 * close - high - low) / (high - low) * volume) 
+    
+    # Return Value:
+    adi 
 }
-	
+    
 
 # ------------------------------------------------------------------------------
 
-	
+    
 adoscillatorTA = 
 function(open, high, low, close) 
 {
-	# FUNCTION:
-	
-	# Indicator:
-	adoscillator = (high - open + close - low) / (high - low) * 50 
-	
-	# Return Value:
-	adoscillator 
+    # FUNCTION:
+    
+    # Indicator:
+    adoscillator = (high - open + close - low) / (high - low) * 50 
+    
+    # Return Value:
+    adoscillator 
 }
-	
+    
 
 # ------------------------------------------------------------------------------
 
-	
+    
 bollingerTA = 
 function(x, n = 20, n.sd = 2, trim = TRUE, na.rm = FALSE) 
 {
-	# FUNCTION:
-	
-	# Indicator:
-	mean = c(rep(NA, n-1), SMA(x = x, n = n))
-	std = c(rep(NA, n-1), n.sd*sqrt(rollVar(x = x, n = n)))
-	bollinger = as.matrix(cbind(upper = mean+std, price = x, 
-		lower = mean-std))
-	if (trim){ 
-		bollinger = bollinger[n:length(x),] }
-	else { 
-		rownames(bollinger) = as.character(1:length(x)) }
-	
-	# Return Value:
-	bollinger 
+    # FUNCTION:
+    
+    # Indicator:
+    mean = c(rep(NA, n-1), SMA(x = x, n = n))
+    std = c(rep(NA, n-1), n.sd*sqrt(rollVar(x = x, n = n)))
+    bollinger = as.matrix(cbind(upper = mean+std, price = x, 
+        lower = mean-std))
+    if (trim){ 
+        bollinger = bollinger[n:length(x),] }
+    else { 
+        rownames(bollinger) = as.character(1:length(x)) }
+    
+    # Return Value:
+    bollinger 
 }
-	
+    
 
 # ------------------------------------------------------------------------------
 
@@ -1118,134 +1125,134 @@ chaikinoTA =
 function(high, low, close, volume, n.long = 10, n.short = 3, 
 start = "average", na.rm = NULL) 
 {
-	# FUNCTION:
-	
-	# Indicator:
-	adi = TA.adi(high, low, close, volume)
-	chaikino = EWMA(adi, n.short, start = start, na.rm = na.rm) - 
-		EWMA(adi, n.long, start=start, na.rm = na.rm) 
-	
-	# Return Value:
-	chaikino 
+    # FUNCTION:
+    
+    # Indicator:
+    adi = TA.adi(high, low, close, volume)
+    chaikino = EWMA(adi, n.short, start = start, na.rm = na.rm) - 
+        EWMA(adi, n.long, start=start, na.rm = na.rm) 
+    
+    # Return Value:
+    chaikino 
 }
-	
+    
 
 # ------------------------------------------------------------------------------
 
-	
+    
 chaikinvTA = 
 function(high, low, n.range = 10, n.change = 10, trim = TRUE, 
 start = "average", na.rm = FALSE) 
 {
-	# FUNCTION:
-	
-	# Indicator:
-	rt = EWMA(high-low, n.range, start = start, na.rm = na.rm)
-	chaikinv = (rt[-(1:n.change)]/rt[1:(length(rt)-n.change)]-1)*100
-	if (!trim) chaikinv = c(rep(NA, n), chaikinv)
-	
-	# Return Value:
-	chaikinv 
-}	
-	
+    # FUNCTION:
+    
+    # Indicator:
+    rt = EWMA(high-low, n.range, start = start, na.rm = na.rm)
+    chaikinv = (rt[-(1:n.change)]/rt[1:(length(rt)-n.change)]-1)*100
+    if (!trim) chaikinv = c(rep(NA, n), chaikinv)
+    
+    # Return Value:
+    chaikinv 
+}   
+    
 
 # ------------------------------------------------------------------------------
 
-		
+        
 garmanKlassTA = 
 function(open, high, low, close, trim = TRUE) 
 {
-	# FUNCTION:
-	
-	# Indicator:
-	prices = log(cbind(open, high, low, close))
-	n = nrow(prices); alpha = 0.12; f = 0.192
-	u = high-open; d = low-open; cc = close - open
-	oc = (prices[2:n, 1] - prices[1:(n - 1), 4])^2
-	garmanKlass = 0.511*(u-d)^2 - 0.019*(cc*(u+d) - 2*u*d) - 0.383*cc^2
-	garmanKlass = sqrt(((1 - alpha)*garmanKlass[2:n])/(1-f) + (alpha*oc)/f)
-	if (!trim) garmanKlass = c(NA, garmanKlass)
-	
-	# Return Value:
-	garmanKlass 
+    # FUNCTION:
+    
+    # Indicator:
+    prices = log(cbind(open, high, low, close))
+    n = nrow(prices); alpha = 0.12; f = 0.192
+    u = high-open; d = low-open; cc = close - open
+    oc = (prices[2:n, 1] - prices[1:(n - 1), 4])^2
+    garmanKlass = 0.511*(u-d)^2 - 0.019*(cc*(u+d) - 2*u*d) - 0.383*cc^2
+    garmanKlass = sqrt(((1 - alpha)*garmanKlass[2:n])/(1-f) + (alpha*oc)/f)
+    if (!trim) garmanKlass = c(NA, garmanKlass)
+    
+    # Return Value:
+    garmanKlass 
 }
-	
+    
 
 # ------------------------------------------------------------------------------
 
-	
+    
 macdTA = 
 function(x, n.short = 12, n.long = 26, n.signal = 9, start = "average", 
 na.rm = NULL) 
 {
-	# FUNCTION:
-	
-	# Indicator:
-	MACD = EWMA(x, n.short, start=start, na.rm=na.rm) - 
-		EWMA(x, n.long, start=start, na.rm=na.rm)
-	signal = EWMA(MACD, n.signal, start=start, na.rm = na.rm)
-	macd = cbind(macd = MACD, signal = signal) 
-	rownames(macd) = as.character(1:length(x))
-	
-	# Return Value:
-	macd 
+    # FUNCTION:
+    
+    # Indicator:
+    MACD = EWMA(x, n.short, start=start, na.rm=na.rm) - 
+        EWMA(x, n.long, start=start, na.rm=na.rm)
+    signal = EWMA(MACD, n.signal, start=start, na.rm = na.rm)
+    macd = cbind(macd = MACD, signal = signal) 
+    rownames(macd) = as.character(1:length(x))
+    
+    # Return Value:
+    macd 
 }
-	
+    
 
 # ------------------------------------------------------------------------------
 
-	
+    
 medpriceTA = 
 function(high, low) 
 {
-	# FUNCTION:
-	
-	# Indicator:
-	medprice = (high + low) / 2 
-	
-	# Return Value:
-	medprice 
+    # FUNCTION:
+    
+    # Indicator:
+    medprice = (high + low) / 2 
+    
+    # Return Value:
+    medprice 
 }
-	
+    
 
 
 # ------------------------------------------------------------------------------
 
-	
+    
 momentumTA = 
 function(x, n = 12, trim = TRUE) 
 {
-	# FUNCTION:
-	
-	# Indicator:
-	m = length(x)
-	momentum = x[(n+1):m] - x[1:(m-n)] 
-	if (!trim) momentum = c(rep(NA, n), momentum)
-	
-	# Return Value:
-	momentum 
+    # FUNCTION:
+    
+    # Indicator:
+    m = length(x)
+    momentum = x[(n+1):m] - x[1:(m-n)] 
+    if (!trim) momentum = c(rep(NA, n), momentum)
+    
+    # Return Value:
+    momentum 
 }
-	
-	
+    
+    
 # ------------------------------------------------------------------------------
 
 
 nviTA = 
 function(close, volume) 
 {
-	# FUNCTION:
-	
-	# Indicator:
-	ind = rep(0, length(close)-1)
-	ind[diff(volume) < 0] = 1
-	ch = c(0, TA.roc(close, n = 1, trim = TRUE)/100) 
-	nvi = cumsum(ch * c(0, ind)) 
-	
-	# Return Value:
-	nvi 
+    # FUNCTION:
+    
+    # Indicator:
+    ind = rep(0, length(close)-1)
+    ind[diff(volume) < 0] = 1
+    ch = c(0, TA.roc(close, n = 1, trim = TRUE)/100) 
+    nvi = cumsum(ch * c(0, ind)) 
+    
+    # Return Value:
+    nvi 
 }
-	
-	
+    
+    
 
 # ------------------------------------------------------------------------------
 
@@ -1253,35 +1260,35 @@ function(close, volume)
 obvTA = 
 function(close, volume) 
 {
-	# FUNCTION:
-	
-	# Indicator:
-	obv = cumsum(volume * c(0, sign(diff(close))))
-	
-	# Return Value:
-	obv 
+    # FUNCTION:
+    
+    # Indicator:
+    obv = cumsum(volume * c(0, sign(diff(close))))
+    
+    # Return Value:
+    obv 
 }
-	
+    
 
 
 # ------------------------------------------------------------------------------
 
-	
+    
 pviTA = 
 function(close, volume) 
 {
-	# FUNCTION:
-	
-	# Indicator:
-	ind = rep(0, length(close)-1)
-	ind[diff(volume) > 0] = 1
-	ch = c(0, TA.roc(close, n=1, trim=TRUE)/100)
-	pvi = cumsum(ch * c(0, ind))
-	
-	# Return Value:
-	pvi 
+    # FUNCTION:
+    
+    # Indicator:
+    ind = rep(0, length(close)-1)
+    ind[diff(volume) > 0] = 1
+    ch = c(0, TA.roc(close, n = 1, trim = TRUE)/100)
+    pvi = cumsum(ch * c(0, ind))
+    
+    # Return Value:
+    pvi 
 }
-	
+    
 
 # ------------------------------------------------------------------------------
 
@@ -1289,60 +1296,60 @@ function(close, volume)
 pvtrendTA = 
 function(close, volume) 
 {
-	# FUNCTION:
-	
-	# Indicator:
-	m = length(close)	
-	ch = cumsum( volume * c(0, (close[2:m]/close[1:(m-1)]-1)*100)) 
-	
-	# Return Value:
-	ch 
+    # FUNCTION:
+    
+    # Indicator:
+    m = length(close)   
+    ch = cumsum( volume * c(0, (close[2:m]/close[1:(m-1)]-1)*100)) 
+    
+    # Return Value:
+    ch 
 }
-	
+    
 
 
 # ------------------------------------------------------------------------------
 
-	
+    
 rocTA = 
 function(x, n = 12, trim = TRUE) 
 {
-	# FUNCTION:
-	
-	# Indicator:
-	m = length(x)
-	roc = (x[(n+1):m]/x[1:(m-n)]-1)*100 
-	if (!trim) roc = c(rep(NA, n), roc)
-	
-	# Return Value:
-	roc 
+    # FUNCTION:
+    
+    # Indicator:
+    m = length(x)
+    roc = (x[(n+1):m]/x[1:(m-n)]-1)*100 
+    if (!trim) roc = c(rep(NA, n), roc)
+    
+    # Return Value:
+    roc 
 }
-	
+    
 
 
 # ------------------------------------------------------------------------------
 
-	
+    
 rsiTA = 
 function(x, n = 14, simple = TRUE, trim = TRUE, start = "average", 
 na.rm = NULL) 
 {
-	# FUNCTION:
-	
-	# Indicator:
-	dx = diff(x)
-	if (simple) r = apply(cbind(pmax(dx, 0), -pmin(dx, 0)), 2, SMA, n=n)
-	else r = apply(cbind(pmax(dx, 0), -pmin(dx, 0)), 2, EWMA, n=n)
-	rsi = as.vector(100*(1-1/(1 + r[,1]/r[,2])))
-	if (simple) { names(rsi) = as.character((n+1):length(x)) }
-	else { names(rsi) = as.character(2:length(x)) }
-	if (!trim) {
-		if (simple) rsi = c(rep(NA,n),rsi) else rsi = c(NA,rsi)
-		names(rsi) = as.character(1:length(x))}
+    # FUNCTION:
     
-	# Return Value:
-	rsi 
-}	
+    # Indicator:
+    dx = diff(x)
+    if (simple) r = apply(cbind(pmax(dx, 0), -pmin(dx, 0)), 2, SMA, n=n)
+    else r = apply(cbind(pmax(dx, 0), -pmin(dx, 0)), 2, EWMA, n=n)
+    rsi = as.vector(100*(1-1/(1 + r[,1]/r[,2])))
+    if (simple) { names(rsi) = as.character((n+1):length(x)) }
+    else { names(rsi) = as.character(2:length(x)) }
+    if (!trim) {
+        if (simple) rsi = c(rep(NA,n),rsi) else rsi = c(NA,rsi)
+        names(rsi) = as.character(1:length(x))}
+    
+    # Return Value:
+    rsi 
+}   
     
    
 
@@ -1353,110 +1360,279 @@ stochasticTA =
 function(high, low, close, n.k = 10, n.d = 3, type = "slow", 
 trim = TRUE, na.rm = FALSE) 
 {
-	# FUNCTION:
-	
-	# Indicator:
-	hh = rollMax(high, n.k, trim = TRUE, na.rm = na.rm)
-	ll = rollMin(low, n.k, trim = TRUE, na.rm = na.rm)
-	K = (close[ - (1:(n.k - 1))] - ll)/(hh - ll) * 100
-	D = SMA(K, n.d, trim = TRUE, na.rm = na.rm)
-	type = casefold(type)
-	if (type == "slow") {
-		K = SMA(K, n.d, trim = TRUE, na.rm = na.rm)
-		D = SMA(D, n.d, trim = TRUE, na.rm = na.rm)}
-	if (trim) {
-		K = K[ - (1:(n.d - 1))]
-		stochastic = cbind(K = K, D = D) }
-	else {
-		K = c(rep(NA, n.k - 1), K)
-		D = c(rep(NA, n.k + n.d - 2), D)
-		if (type == "slow") {
-			K = c(rep(NA, n.d - 1), K)
-			D = c(rep(NA, n.d - 1), D)}
-		stochastic = cbind(K = K, D = D) }
-	
-	# Return Value:
-	stochastic 
+    # FUNCTION:
+    
+    # Indicator:
+    hh = rollMax(high, n.k, trim = TRUE, na.rm = na.rm)
+    ll = rollMin(low, n.k, trim = TRUE, na.rm = na.rm)
+    K = (close[ - (1:(n.k - 1))] - ll)/(hh - ll) * 100
+    D = SMA(K, n.d, trim = TRUE, na.rm = na.rm)
+    type = casefold(type)
+    if (type == "slow") {
+        K = SMA(K, n.d, trim = TRUE, na.rm = na.rm)
+        D = SMA(D, n.d, trim = TRUE, na.rm = na.rm)}
+    if (trim) {
+        K = K[ - (1:(n.d - 1))]
+        stochastic = cbind(K = K, D = D) }
+    else {
+        K = c(rep(NA, n.k - 1), K)
+        D = c(rep(NA, n.k + n.d - 2), D)
+        if (type == "slow") {
+            K = c(rep(NA, n.d - 1), K)
+            D = c(rep(NA, n.d - 1), D)}
+        stochastic = cbind(K = K, D = D) }
+    
+    # Return Value:
+    stochastic 
 }
-	
+    
 
 # ------------------------------------------------------------------------------
 
-	
+    
 typicalPriceTA = 
 function(high, low, close) 
 {
-	# FUNCTION:
-	
-	# Indicator:
-	typicalPrice = (high + low + close)/3 
-	names(tyicalPrice) = as.character(1:length(x))
-	
-	# Return Value:
-	typicalPrice 
+    # FUNCTION:
+    
+    # Indicator:
+    typicalPrice = (high + low + close)/3 
+    names(tyicalPrice) = as.character(1:length(x))
+    
+    # Return Value:
+    typicalPrice 
 }
-	
+    
 
 # ------------------------------------------------------------------------------
 
-	
+    
 wcloseTA = 
 function(high, low, close) 
 {
-	# FUNCTION:
-	
-	# Indicator:
-	wclose = (high + low + 2 * close)/4 
-	names(wclose) = as.character(1:length(x))
-	
-	# Return Value:
-	wclose 
+    # FUNCTION:
+    
+    # Indicator:
+    wclose = (high + low + 2 * close)/4 
+    names(wclose) = as.character(1:length(x))
+    
+    # Return Value:
+    wclose 
 }
-	
+    
 
 # ------------------------------------------------------------------------------
 
-	
+    
 williamsadTA = 
 function(high, low, close) 
 {
-	# FUNCTION:
-	
-	# Indicator:
-	ind = c(0, sign(diff(close)))
-	williamsad = vector("numeric", length(close))
-	ind.pos = (ind == 1)
-	ind.neg = (ind == -1)
-	williamsad[ind.pos] = (close - low)[ind.pos]
-	williamsad[ind.neg] =  - (high - close)[ind.neg]
-	williamsad = cumsum(williamsad) 
-	names(williamsad) = as.character(1:length(x))
-	
-	# Return Value:
-	williamsad 
+    # FUNCTION:
+    
+    # Indicator:
+    ind = c(0, sign(diff(close)))
+    williamsad = vector("numeric", length(close))
+    ind.pos = (ind == 1)
+    ind.neg = (ind == -1)
+    williamsad[ind.pos] = (close - low)[ind.pos]
+    williamsad[ind.neg] =  - (high - close)[ind.neg]
+    williamsad = cumsum(williamsad) 
+    names(williamsad) = as.character(1:length(x))
+    
+    # Return Value:
+    williamsad 
 }
-	
+    
 
 
 # ------------------------------------------------------------------------------
 
-	
+    
 williamsrTA = 
 function(high, low, close, n = 20, trim = TRUE, na.rm = FALSE) 
 {
+    # FUNCTION:
+    
+    # Indicator:
+    hh = rollMax(high, n, trim = FALSE, na.rm = na.rm)
+    ll = rollMin(low, n, trim = FALSE, na.rm = na.rm)
+    williamsr = (hh-close)/(hh-ll)*100 
+    names(williamsr) = as.character(1:length(x))
+    if (trim) williamsr = williamsr[n:length(high)]
+    
+    # Return Value:
+    williamsr 
+}           
+        
+    
+################################################################################    
+# 10 TSLAG
+
+
+################################################################################
+# FUNCTION:     DESCRIPTION:
+#  tslag         Creates a lagged or leading vector/matrix of selected order(s)
+################################################################################
+
+
+tslag = 
+function(x, k = 1, trim = FALSE)
+{	# A function implemented by Diethelm Wuertz
+
+	# Description:
+	#	Creates a lagged or leading vector/matrix of selected order(s).
+	
+	# Arguments:
+	#	x - a vector of data, missing values (NA) are allowed. 
+	#	k - the number of positions the new series is to lag 
+	#		or to lead the input series. 
+	#	trim - a logical flag, if TRUE, the missing values at the 
+	#		beginning or end of the returned series will be 
+	#		trimmed. The default value is FALSE. 
+	
+	# Details:
+	#	With a positive value of "k" we get a lagged series and with
+	#	a negative value we get a leading series. 
+	
+	# Examples:
+	#	tslag(rnorm(10), 2)
+	#	tslag(rnorm(10), -2:2)
+
 	# FUNCTION:
 	
-	# Indicator:
-	hh = rollMax(high, n, trim=F, na.rm=na.rm)
-	ll = rollMin(low, n, trim=F, na.rm=na.rm)
-	williamsr = (hh-close)/(hh-ll)*100 
-	names(williamsr) = as.character(1:length(x))
-	if (trim) williamsr = williamsr[n:length(high)]
+	# Internal Function:
+	tslag1 = function(x, k) {
+		y = x
+		if (k > 0) y = c(rep(NA, times = k), x[1:(length(x)-k)])
+		if (k < 0) y = c(x[(-k+1):length(x)], rep(NA, times = -k))
+		y }
+		
+	# Bind:
+	ans = NULL
+	for ( i in k) {
+		ans = cbind(ans, tslag1(x, i)) }
+		
+	# Trim:
+	if (trim) {
+		indexes = (1:length(ans[,1]))[!is.na(apply(ans, 1, sum))]
+		ans = ans[indexes, ] }
+		
+	# As Vector:
+	if (length(k) == 1) ans = as.vector(ans)
 	
 	# Return Value:
-	williamsr 
-}			
-		
+	ans
+}
+
+
+
+################################################################################    
+# 11 PDL
+
+
+################################################################################
+# FUNCTION:     DESCRIPTION:
+#  pdl           Creates regressor matrix for polynomial distributed lags
+################################################################################
+
+
+pdl = 
+function(x, d = 2, q = 3, trim = FALSE)
+{	# A function implemented by Diethelm Wuertz
+
+	# Description:
+	#	Creates regressor matrix for polynomial distributed lags.
 	
-# ------------------------------------------------------------------------------    
+	# Arguments:
+	#	x - a numeric vector.
+	#	d - an integer specifying the order of the polynomial. 
+	# 	q - an integer specifying the number of lags to use in 
+	#		creating polynomial distributed lags. This must be 
+	#		greater than d. 
+	#	trim - a logical flag; if TRUE, the missing values at 
+	#		the beginning of the returned matrix will be trimmed. 
+
+	# Value:
+	#	Returns a matrix representing the regressor matrix. 
+
+	
+	# FUNCTION:
+
+	# Polynomial distributed lags:
+	M = tslag(x, 1:q, FALSE)
+	C = NULL
+	for (i in 0:d) { C = rbind(C, (1:q)^i) }
+	Z = NULL
+	for (i in 1:(d+1)) { Z = cbind(Z, apply(t(C[i,]*t(M)), 1, sum)) }
+	Z[, 1] = Z[, 1] + x
+	
+	# Trim:
+	if (trim) {
+		indexes = (1:length(Z[,1]))[!is.na(apply(Z, 1, sum))]
+		Z = Z[indexes, ] }
+
+	# Return Value:
+	Z
+}
+
+
+################################################################################
+# 12 DISSAGGREGATE
+
+
+################################################################################
+# FUNCTION:      DESCRIPTION:
+#  disaggregate   Disaggregates time series from low to high frequency
+################################################################################
+
+
+disaggregate = 
+function(data, k, 
+method = c("linear", "constant", "fmm", "spline", "natural", "periodic"), 
+how = NA, x = NA, out.positions = NA, ...)
+{	# A function implemented by Diethelm Wuertz
+
+	# Description:
+	#	Time series disaggregation/distribution from low frequency
+	# 	to high frequency.
+	
+	# Arguments:
+	#	data - a vector, or a matrix, or a "timeSeries" object 
+	#	 	that represents the low frequency time series to 
+	#		be disaggregated. 
+	# 	k - a positive integer specifying the number of time 
+	#		periods to distribute data into. For example, to 
+	#	   	disaggregate an annual series into a quarterly 
+	#     	series, you set k to 4. 
+
+	# Value:
+	#	Returns a vector, or a matrix, or a "timeSeries" object that 
+	#	represents the disaggregated high frequency time series. 
+
+	# FUNCTION:
+	
+	# Method:
+	method = method[1]
+	
+	# Data
+	x = 1:length(data)
+	y = as.vector(data)
+	xout = seq(1, length(data), length=k*length(data))
+	
+	# "linear" / "constant" Interpolation:	
+	if (method == "linear" || method == "constant") 
+		ans = approx(x = x, y = y, xout, method = "linear")
+	
+	# "fmm" / "natural" / "periodic" Spline interpolation:
+	if (method == "spline") method = "fmm"
+	if (method == "fmm" | method == "natural" | method == "periodic") 
+		ans = spline(x = x, y = y, n = k*length(x), method = "fmm",
+            xmin = min(x), xmax = max(x))	
+	
+	# Return Value:
+	ans
+}
+
+
+################################################################################
 

@@ -3,9 +3,9 @@
 # F - A SOFTWARE COLLECTION FOR FINANCIAL ENGINEERS
 #
 #     fSeries
-#     PART II: The Dynamical Process Behind Financial Markets
+#     The Dynamical Process Behind Financial Markets
 #
-#     collected by Diethelm Wuertz
+#     collected and maintained by Diethelm Wuertz
 #
 #*******************************************************************************
 
@@ -27,32 +27,18 @@
 
 # Copyrights (C)
 # for this R-port: 
+#   1999 - 2004, Diethelm Wuertz, GPL
 #   Diethelm Wuertz <wuertz@itp.phys.ethz.ch>
+#   info@rmetrics.org
+#   www.rmetrics.org
 # for the code accessed (or partly included) from other R-ports:
-#   ts: Collected by Brian Ripley. See SOURCES
-#   tseries: Compiled by Adrian Trapletti <a.trapletti@bluewin.ch>
-#   fracdiff: S original by Chris Fraley <fraley@stat.washington.edu>
-#     R-port: by Fritz Leisch <leisch@ci.tu-wien.ac.at>
-#     since 2003-12: Martin Maechler
-#   lmtest: Torsten Hothorn <Torsten.Hothorn@rzmail.uni-erlangen.de>
-#     Achim Zeileis <zeileis@ci.tuwien.ac.at>
-#     David Mitchell
-#   mda: S original by Trevor Hastie & Robert Tibshirani
-#     R port by Friedrich Leisch, Kurt Hornik and Brian D. Ripley
-#   mgcv: Simon Wood <simon@stats.gla.ac.uk>
-#   modreg: Brian Ripley and the R Core Team
-#   polspline: Charles Kooperberg <clk@fhcrc.org>
-#   nnet: S original by Venables & Ripley. 
-#     R port by Brian Ripley <ripley@stats.ox.ac.uk>
-#       following earlier work by Kurt Hornik and Albrecht Gebhardt
+#   see R's copyright and license files
+# for the code accessed (or partly included) from contributed R-ports
+# and other sources
+#   see Rmetrics's copyright file
 
 
-#*******************************************************************************
-
-
-# Default Parameters:
-
-	xmpSeries = function(prompt = "") {invisible(prompt)}
+################################################################################
 
 
 .First.lib = 
@@ -60,19 +46,13 @@ function(lib, pkg)
 { 	# A function implemented by Diethelm Wuertz
 	
 	# Package:
-	cat("\nfSeries:    The Dynamical Process Behind Financial Markets")
+	cat("\nRmetrics, (C) 1999-2004, Diethelm Wuertz, GPL")
+	cat("\nfSeries: The Dynamical Process Behind Financial Markets\n")
 
-	# Requires - Suppress output ...
-	sink("@sink@")
-	library(mgcv) # gam
-	library(nnet) # nnet
-	sink()
-	unlink("@sink@")
-	
 	# Load dll:
 	library.dynam("fSeries", pkg, lib)
 }
 
 
-# ******************************************************************************
+################################################################################
 

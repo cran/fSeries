@@ -1,6 +1,6 @@
-\name{benchmarkAnalysis}
+\name{BenchmarkAnalysis}
 
-\alias{benchmarkAnalysis}
+\alias{BenchmarkAnalysis}
 
 \alias{ohlcPlot}
 
@@ -16,25 +16,21 @@
 
 \description{
 
-	A collection of untility and benchmark functions for the analysis of 
-	financial markets. The collection provides a set of functions for the
-	computation of returns, for the display of price charts, and for 
+	A collection and description of utility and benchmark 
+	functions for the analysis of financial markets. The 
+	collection provides a set of functions for the computation 
+	of returns, for the display of price charts, and for 
 	benchmark measurements.
 	\cr
 	
 	The functions are:
 	
-	\tabular{rll}{
-	   1	\tab	\code{getReturns}		
-	   		\tab 	Computes returns given a price series, \cr
-	   2	\tab	\code{ohlcPlot}      	
-	   		\tab 	Plots open--high--low--close bar charts, \cr
-	   3 	\tab 	\code{sharpeRatio}	  	
-	   		\tab 	Computes Sharpe Ratio, \cr
-	   4 	\tab	\code{sterlingRatio} 	
-	   		\tab 	Computes Sterling Ratio, \cr
-	   5	\tab	\code{maxDrawDown}	  	
-	   		\tab 	Computes maximum drawdown.}
+	\tabular{ll}{
+	\code{getReturns} \tab Computes returns given a price series, \cr
+	\code{ohlcPlot} \tab Plots open--high--low--close bar charts, \cr
+	\code{sharpeRatio} \tab Computes Sharpe Ratio, \cr
+	\code{sterlingRatio} \tab Computes Sterling Ratio, \cr
+	\code{maxDrawDown} \tab Computes maximum drawdown.}
 	
 }
 
@@ -188,7 +184,7 @@ maxDrawDown(x)
 \author{
 
 	Adrian Trapletti for the ohlcPlot,*Ratio and maxDrawDown functions, \cr
-	Diethelm Wuertz for this \R-port.
+	Diethelm Wuertz for the Rmetrics \R-port.
 	
 }
 

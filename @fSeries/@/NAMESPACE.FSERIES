@@ -1,0 +1,128 @@
+
+
+## NAMESPACE: fSeries
+
+
+## IMPORT ######################################################################
+
+import(methods)
+import(stats)
+import(mgcv)
+import(nnet)
+
+## LIBRARY #####################################################################
+
+useDynLib(fSeries)
+
+## FUNCTIONS ###################################################################
+
+# A1-armaModelling:
+export(armaSim, armaFit)
+exportClasses("fARMA")
+
+# A2-armaStatistics:
+export(armaTrueacf, armaRoots)
+
+# A3-garchModelling:
+export(garchSim, garchFit, aparchSim, aparchFit)
+
+# A4-randomInnovations:
+export(set.lcgseed, get.lcgseed, runif.lcg, rnorm.lcg, rt.lcg) 
+
+# A5-tseriesTest:
+export(tsTest, bdsTest, jbTest, wnnTest, tnnTest)	
+
+# B1-regressionBuiltin:
+# don't export(BImars, predictBImars)
+# don't export(BIpolymars, predictBIpolymars, summaryBIpolymars)
+
+# B1-regressionModelling:
+export(regFit)
+exportClasses("fREG")
+
+# B2-regressionTests:
+export(lmTest)
+
+# B3-systemBuiltin:
+# don't export
+
+# B3-systemModelling:
+# export(systemFit)
+# exportClasses("fSYSTEM")
+
+# D1-technicalAnalysis:
+export(emaTA, biasTA, medpriceTA, typicalpriceTA, wcloseTA, rocTA, oscTA)
+export(momTA, macdTA, cdsTA, cdoTA, vohlTA, vorTA)
+export(fpkTA, fpdTA, spdTA, apdTA, wprTA, rsiTA)
+
+# D2-benchmarkAnalysis:
+export(getReturns)
+export(maxDrawDown, sharpeRatio, sterlingRatio, ohlcPlot)	
+
+# D3-RollingAnalysis:
+export(rollFun, rollMean, rollVar, rollMin, rollMax)
+
+# G1-matrixAddon:
+export(triang, Triang, pascal, colVec, rowVec, colIds, rowIds)
+export("colIds<-", "rowIds<-")
+export(inv, norm, rk, tr, kron)	
+
+# G2-Heaviside:
+export(H, Sign, Delta, Boxcar, Ramp)
+
+# H1-snormDistribution:
+export(dsnorm, psnorm, qsnorm, rsnorm)
+
+# H2-sstdDistribution:
+export(dstd, pstd, qstd, rstd, dsstd, psstd, qsstd, rsstd)  
+
+# H3-sgedDistribution:
+export(dged, pged, qged, rged, dsged, psged, qsged, rsged)
+
+# H4-garchdistFits:
+export(normFit, snormFit, gedFit, sgedFit, stdFit, sstdFit)
+
+# Z1-fSeriesTools:
+export(xmpSeries, xmpfSeries)   
+
+## S3 Methods ##################################################################
+
+
+# A1-armaModelling:
+S3method(predict, fARMA)
+S3method(print, fARMA)
+S3method(plot, fARMA)
+S3method(summary, fARMA)
+S3method(fitted.values, fARMA)
+S3method(residuals, fARMA)
+
+# A3-garchModelling:
+S3method(print, fGARCH)
+S3method(summary, fGARCH)
+#S3method(print.summary, fGARCH)
+S3method(plot, fGARCH)
+S3method(fitted.values, fGARCH)
+S3method(residuals, fGARCH)
+# 
+S3method(print, fAPARCH)
+S3method(summary, fAPARCH)
+#S3method(print.summary, fAPARCH)
+S3method(fitted.values, fAPARCH)
+S3method(residuals, fAPARCH)
+
+# B1-regressionModelling:
+S3method(print, fREG)     
+S3method(plot, fREG)
+S3method(summary, fREG)
+S3method(predict, fREG)
+S3method(fitted.values, fREG)
+S3method(residuals, fREG)         
+
+# B3-systemModelling:
+# S3method(print, fSYSTEM)
+
+## DATA ########################################################################
+
+
+################################################################################
+

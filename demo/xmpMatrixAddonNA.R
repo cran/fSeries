@@ -6,15 +6,14 @@
 # Description:
 #   Write R functions which remove, substitute, interpolate and
 #   impute missing values in a matrix object:
-#
-#       removeNA        removes NAs from a matrix object
-#       subtituteNA     substitutes NAs by zeroes, the column 
-#                       mean or column median
-#       interpNA        interpolate NAs using R's "approx" 
-#                       function
-#       knnNA           imputes NAs by the knn-Algorithm using R's
-#                       contributed function "knn" from the "EMV" 
-#                       Package
+#   1. removeNA        removes NAs from a matrix object
+#   2. subtituteNA     substitutes NAs by zeroes, the column 
+#                      mean or column median
+#   3. interpNA        interpolate NAs using R's "approx" 
+#                      function
+#   4. knnNA           imputes NAs by the knn-Algorithm using R's
+#                      contributed function "knn" from the "EMV" 
+#                      Package
 # 
 # Notes:
 #   We didn't take care, that NAs at the border of a matrix or
@@ -26,13 +25,8 @@
 #
 
 
-# ------------------------------------------------------------------------------
-
-
+################################################################################
 # Examples:
-    
-    # DON'T RUN:
-    if (FALSE) {
 
 
     # Generate a matrix with missing values:
@@ -82,11 +76,7 @@
     t(round(knnNA(t(M), k = 2, correlation = TRUE), 2))
     ###
     
-    
-    } 
-    ### END OF DON'T RUN
-    
 
-# ******************************************************************************
+################################################################################
 
     

@@ -1,6 +1,6 @@
-\name{rollingAnalysis}
+\name{RollingAnalysis}
 
-\alias{rollingAnalysis}
+\alias{RollingAnalysis}
 
 \alias{rollFun}
 \alias{rollMin}
@@ -13,22 +13,19 @@
 
 \description{
 
-	A collection of functions to perform a rolling analysis.
-	A rolling analysis is often required in building trading models.
+	A collection and description of functions to perform a 
+	rolling analysis. A rolling analysis is often required 
+	in building trading models.
+	\cr
 		
 	The functions are:
 	
-	\tabular{rll}{
-		1  	\tab	\code{rollFun}		
-			\tab	Rolling or moving sample statistics, \cr
-		2  	\tab	\code{rollMin}		
-			\tab	Rolling or moving sample minimum, \cr
-		3  	\tab	\code{rollMax}		
-			\tab	Rolling or moving sample maximum, \cr
-		4  	\tab	\code{rollMean}	
-			\tab	Rolling or moving sample mean, \cr
-		5  	\tab	\code{rollVar}		
-			\tab	Rolling or moving sample variance. }
+	\tabular{ll}{
+	\code{rollFun} \tab Rolling or moving sample statistics, \cr
+	\code{rollMin} \tab Rolling or moving sample minimum, \cr
+	\code{rollMax} \tab Rolling or moving sample maximum, \cr
+	\code{rollMean}	\tab Rolling or moving sample mean, \cr
+	\code{rollVar} \tab Rolling or moving sample variance. }
 			
 }
 
@@ -92,7 +89,8 @@ rollVar(x, n = 9, trim = TRUE, unbiased = TRUE, na.rm = FALSE)
 
 \author{
 
-	Diethelm Wuertz for this \R-port.
+	Diethelm Wuertz for the Rmetrics \R-port.
+	
 }
 
 

@@ -92,52 +92,22 @@
 #
 
 
-# ------------------------------------------------------------------------------
-
-
-# This library is free software; you can redistribute it and/or
-# modify it under the terms of the GNU Library General Public
-# License as published by the Free Software Foundation; either
-# version 2 of the License, or (at your option) any later version.
-#
-# This library is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
-# GNU Library General Public License for more details.
-#
-# You should have received a copy of the GNU Library General 
-# Public License along with this library; if not, write to the 
-# Free Foundation, Inc., 59 Temple Place, Suite 330, Boston, 
-# MA 02111-1307 USA
-
-
 ################################################################################
-# FUNCTION:                 DESCRIPTION:
-#  garchOxFit                Fits parameters of a garch model           
-#   print.garchOx            S3 Print Method
-#   plot.garchOx             S3 Plot Method
-################################################################################
+# garchOx:
 
 
-################################################################################
-# garchOx
-# The functions can be found in "funSeries.R"
-
-
-# Windows Only, adapt it under Linux ...
-
+	# The functions can be found in "funSeries.R"
+	# Windows Only, adapt it under Linux ...
     OXBIN <<- "C:/Ox/bin"
     OXCMD <<- "C:\\Ox\\bin\\oxl.exe library\\fSeries\\libs\\GarchOx.ox"
-    
     # Creates Files: "OxParameter.txt", "OxSeries.csv", "OxSeries.csv"
+    ###
 
 
-################################################################################
+################################################################################ 
+# Data:
 
 
-## Examples
-    
-    # Description:
     #   The file "dem2gbp" contains daily observations of the 
     #   Deutschmark / British Pound foreign exchange log returns. 
     #   This data set has been promoted as an informal benchmark 
@@ -151,73 +121,82 @@
     #   rates. The sample period is from January 3, 1984, to December 
     #   31, 1991, for a total of 1975 daily observations of FX exchange 
     #   rates.
-
+	###
+	
+	
     # Load Benchmark Data Set:
     data(dem2gbp)
     x = dem2gbp[, 1]
+    ###
 
     
-## Example 1: ARMA/GARCH Models -  Gaussian Distribution
+################################################################################
+# Example 1: ARMA/GARCH Models -  Gaussian Distribution
     
+
+    # ARCH(2):
     arch2 = garchOxFit(
-        formula.mean = ~ arma(0,0), formula.var = ~ garch(0,2))
-        arch2
-        
+      formula.mean = ~ arma(0,0), formula.var = ~ garch(0,2))
+    arch2
+    # GARCH(2,0):    
     garch20 = garchOxFit(
-        formula.mean = ~ arma(0,0), formula.var = ~garch(2,0))
-        garch20
-    
+      formula.mean = ~ arma(0,0), formula.var = ~garch(2,0))
+      garch20
+    # GARCH(1,1):
     garch11 = garchOxFit(
-        formula.mean = ~arma(0,0), formula.var = ~garch(1,1))
-        garch11
-        
+      formula.mean = ~arma(0,0), formula.var = ~garch(1,1))
+      garch11
+    # ARMA(1,0)-GARCH(1,1):   
     ar1.garch11 = garchOxFit(
-        formula.mean = ~arma(1,0), formula.var = ~garch(1,1))   
-        ar1.garch11     
-        
+      formula.mean = ~arma(1,0), formula.var = ~garch(1,1))   
+      ar1.garch11     
+    # ARMA(0,1)-GARCH(1,1):   
     ma1.garch11 = garchOxFit(
-        formula.mean = ~arma(0,1), formula.var = ~garch(1,1))    
-        ma1.garch11
-        
+      formula.mean = ~arma(0,1), formula.var = ~garch(1,1))    
+      ma1.garch11
+    # ARMA(1,1)-GARCH(1,1): 
     arma11.garch11 = garchOxFit(
-        formula.mean = ~arma(1,1), formula.var = ~garch(1,1))
-        arma11.garch11
+      formula.mean = ~arma(1,1), formula.var = ~garch(1,1))
+      arma11.garch11
+    ###
   
         
-## Example 2: Other than Gaussian Distributions:
+################################################################################
+# Example 2: Other than Gaussian Distributions:
   
     
+    # Fit Student-t:
     garch11.t = garchOxFit(
-        formula.var = ~garch(1,1), cond.dist = "t")  
-        garch11.t   
-        
+      formula.var = ~garch(1,1), cond.dist = "t")  
+    garch11.t 
+    # Next GED:     
     garch11.ged = garchOxFit(
-        formula.var = ~garch(1,1), cond.dist = "ged")   
-        garch11.ged     
-            
+      formula.var = ~garch(1,1), cond.dist = "ged")   
+    garch11.ged     
+    # Next skewed Student-t:      
     garch11.st = garchOxFit(
-        formula.var = ~garch(1,1), cond.dist = "skewed-t")  
-        garch11.st
+      formula.var = ~garch(1,1), cond.dist = "skewed-t")  
+      garch11.st
+    ###
 
-     
-## Example 3: Extended GARCH Models:
+  
+################################################################################   
+# Example 3: Extended GARCH Models:
     
-    # Sorry, print method is not yet working for the following models:
-    
+    # Sorry, print method is not yet working for the following models:   
+    # Fit:
     egarch11 = garchOxFit(
-        formula.var = ~ egarch(1,1))    
-    
+      formula.var = ~ egarch(1,1))     
     gjr11 = garchOxFit(
-        formula.var = ~ gjr(1,1))   
-    
+      formula.var = ~ gjr(1,1))   
     aparch11 = garchOxFit(
-        formula.var = ~ aparch(1,1))  
-    
+      formula.var = ~ aparch(1,1))  
     # Fails ...
     # igarch11 = garchOxFit(
     #   formula.var = ~ igarch(1,1)) 
+    ###
     
         
-# ------------------------------------------------------------------------------
+################################################################################
 
     

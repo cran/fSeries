@@ -1,11 +1,10 @@
-\name{regressionModelling}
+\name{RegressionModelling}
 
-\alias{regressionModelling}
+\alias{RegressionModelling}
 
 \alias{fREG}
 \alias{fREG-class}
 
-%
 \alias{regFit}
 
 \alias{predict.fREG}
@@ -18,66 +17,39 @@
 \alias{residuals.fREG}
 
 
-% BUILTINs:
-
-\alias{BImars}
-\alias{BIpolymars}
-\alias{predictBImars} 
-\alias{predictBIpolymars} 
-\alias{summaryBIpolymars}
-
-
 \title{Univariate Regression Modelling}
 
 
 \description{
 
-	A collection of easy to use functions to perform a univariate
-	regression analysis from several methods, to analyse and 
-	summarize the fit, and to predict for new data records.
+	A collection and description of easy to use functions to perform 
+	a univariate regression analysis from several methods, to analyse 
+	and summarize the fit, and to predict for new data records. This 
+	wrapper was mainly build for multivariate financial time series 
+	analysis.
+	\cr
 	
-	This wrapper was mainly build for multivariate financial time
-	series analysis.
+	The models include:
 	
-	The functions and methods are:
+	\tabular{ll}{
+	\code{"LM"} \tab Linear Modelling, \cr
+	\code{"GLM"} \tab Generalized Linear Modelling, \cr
+	\code{"GAM"} \tab Generalized Additive Modelling, \cr
+	\code{"PPR"} \tab Projection Pursuit Regression, \cr
+	\code{"MARS"} \tab Multivariate Adaptive Regression Splines, \cr
+	\code{"POLYMARS"} \tab Polytochomous MARS, and \cr
+	\code{"NNET"} \tab Feedforward Neural Network Modelling. }
+			
+	Available methods are:
 	
-	\tabular{rll}{
-			\tab
-			\tab	\cr
-			\tab
-			\tab	\bold{The Models Include:} \cr
-		1	\tab 	\code{"LM"} 		 
-			\tab  	Linear Modelling, \cr
-		2	\tab 	\code{"GLM"} 	 
-			\tab  	Generalized Linear Modelling, \cr
-		3	\tab 	\code{"GAM"} 	 
-			\tab  	Generalized Additive Modelling, \cr
-		4	\tab 	\code{"PPR"} 	 
-			\tab  	Projection Pursuit Regression, \cr
-		5	\tab 	\code{"MARS"} 	 
-			\tab  	Multivariate Adaptive Regression Splines, \cr
-		6	\tab 	\code{"POLYMARS"} 
-			\tab  	Polytochomous MARS, and \cr
-		7	\tab 	\code{"NNET"} 	 
-			\tab  	Feedforward Neural Network Modelling. \cr
-			\tab
-			\tab	\cr
-			\tab
-			\tab	\bold{Available Methods are:} \cr
-		1	\tab 	\code{predict(object, newdata, ...)}  
-			\tab    Predict method for objects of class 'fARMA', \cr
-		2	\tab 	\code{print(x, ...)} 
-			\tab    Print method for objects of class 'fARMA', \cr
-		3	\tab 	\code{plot(x, ...)}  
-			\tab    Plot method for objects of class 'fARMA', \cr
-		4	\tab 	\code{summary(object, ...}  
-			\tab    Summary method for objects of class 'fARMA', \cr
-		5	\tab 	\code{fitted.values(object)}  
-			\tab    Fitted values method for objects of class 'fARMA', \cr
-		6	\tab 	\code{residuals(object)}
-			\tab	Residuals method for objects of class 'fARMA'. }
-		
-	
+	\tabular{ll}{
+	\code{predict} \tab Predict method for objects of class 'fARMA', \cr
+	\code{print} \tab Print method for objects of class 'fARMA', \cr
+	\code{plot} \tab Plot method for objects of class 'fARMA', \cr
+	\code{summary} \tab Summary method for objects of class 'fARMA', \cr
+	\code{fitted.values} \tab Fitted values method for objects of class 'fARMA', \cr
+	\code{residuals} \tab Residuals method for objects of class 'fARMA'. }
+			
 	The print method prints the returned object from a regression 
 	fit, and the summary method performs a diagnostic analysis and 
 	summarizes the results of the fit in a detailed form. The plot
@@ -88,7 +60,7 @@
 }
 	
 
-\notes{	
+\note{	
 	
 	This \code{regFit} function offers for several regression models
 	an easy to use wrapper. There is nothing really new in this package. 
@@ -204,7 +176,7 @@ regFit(formula, family = gaussian(), data = list(),
     	[predict] - \cr
 	    a string denoting the type of input data. By default set to
 	    \code{"response"}.
-	   }
+		}
     \item{\dots}{
     	additional optional arguments to be passed to the underlying 
     	functions. For details we refer to inspect the following help 
@@ -218,7 +190,7 @@ regFit(formula, family = gaussian(), data = list(),
 
 \value{
 
-  	\code{regFit} 
+  	\bold{Function regFit:} 
   	\cr
   	returns an S4 object of class \code{"fREG"}, with the folliwing 
   	slots:
@@ -254,37 +226,37 @@ regFit(formula, family = gaussian(), data = list(),
     \item{parameters}{
     	named parameters or coefficients of the fitted model.
     	}
-    \item{title}[
-    	a title string.}
-
-    \cr\cr	
-    \code{methods}
+    \item{title}{
+    	a title string.
+    	}
+    	  	
+    \bold{Methods:}
     \cr\cr
     
-    The output from the \code{print} S3 method gives information at 
+    The output from the \code{print} method gives information at 
     least about the function call, the fitted model parameters,
     and the residuals variance.
     \cr\cr
     
-    The \code{plot} S3 method produces three figures, the first plots
+    The \code{plot} method produces three figures, the first plots
     the series of residuals, the second does a quantile-quantile plot
     of the residual plot, and the third plots the fitted values vs.
     the residuals. Additional plots can be generated from the plot
     method (if available) of the underlying model, see the example below. 
     \cr\cr
     
-    The \code{summary} S3 method provides additional information,
+    The \code{summary} method provides additional information,
     like errors on the model parameters as far as available, and adds 
     additional information about the fit.  
     \cr\cr
     
-    The \code{predict} S3 method forecasts from a fitted model. The
+    The \code{predict} method forecasts from a fitted model. The
     returned values are the same as produced by the prediction
     function of the selected regression model. Especially, \code{$fit} 
     returns the forecast vector.
     \cr\cr
      
-    The \code{residuals} and \code{fitted.values} S3 methods return
+    The \code{residuals} and \code{fitted.values} methods return
     the residuals and the fitted values as numeric vectors.
 
 }
@@ -560,7 +532,8 @@ regFit(formula, family = gaussian(), data = list(),
 	N.N. for the \code{ppr} functions from R's \code{modreg} package, \cr
 	T. Hastie, R. Tibshirani for the \code{mars} functions from R's \code{?} package, \cr
 	M. O' Connors for the \code{polymars} functions from R's \code{?} package, \cr
-	The R core team for the \code{nnet} functions from R's \code{nnet} package. \cr
+	The R core team for the \code{nnet} functions from R's \code{nnet} package, \cr
+	Diethelm Wuertz for the Rmetrics \R-port.
 
 }
 
@@ -697,6 +670,7 @@ Wood (2001);
    
 ## Generalized Additive Modelling:
    xmpSeries("\nNext: Generalized Additive Modelling > ")
+   require(mgcv)
    par(mfrow = c(2, 2))
    fit = regFit(formula = recession ~ s(tbills3m) + s(tbonds10y),
    	 family = gaussian(), data = recession, method = "GAM")

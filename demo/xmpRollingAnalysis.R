@@ -9,13 +9,17 @@
 #	the function "rollFun" for the SMA and "filter" for
 #	the function EWMA
 #
-# Notes:
-#	The R functions can be found in "funSeries.R"
-#
 # Author:
 #	(C) 2002, Diethelm Wuertz, GPL
 #
 
 
-# ------------------------------------------------------------------------------
+################################################################################
+# Notes:
+
+
+	# The R functions can be found in "funSeries.R"
+
+	
+################################################################################
 

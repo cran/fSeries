@@ -16,39 +16,32 @@
 
 # Copyrights (C)
 # for this R-port: 
+#   1999 - 2004, Diethelm Wuertz, GPL
 #   Diethelm Wuertz <wuertz@itp.phys.ethz.ch>
+#   info@rmetrics.org
+#   www.rmetrics.org
 # for the code accessed (or partly included) from other R-ports:
-#   R: see R's copyright and license file
-#   ts: collected by Brian Ripley. See SOURCES
-#   tseries: Compiled by Adrian Trapletti <a.trapletti@bluewin.ch>
-#   fracdiff: S original by Chris Fraley <fraley@stat.washington.edu>
-#     R-port: by Fritz Leisch <leisch@ci.tu-wien.ac.at>
-#     since 2003-12: Martin Maechler
-#   lmtest: Torsten Hothorn <Torsten.Hothorn@rzmail.uni-erlangen.de>
-#     Achim Zeileis <zeileis@ci.tuwien.ac.at>
-#     David Mitchell
-#   mda: S original by Trevor Hastie & Robert Tibshirani
-#     R port by Friedrich Leisch, Kurt Hornik and Brian D. Ripley
-#   mgcv: Simon Wood <simon@stats.gla.ac.uk>
-#   modreg: Brian Ripley and the R Core Team
-#   polspline: Charles Kooperberg <clk@fhcrc.org>
-#   nnet: S original by Venables & Ripley. 
-#     R port by Brian Ripley <ripley@stats.ox.ac.uk>
-#       following earlier work by Kurt Hornik and Albrecht Gebhardt
+#   see R's copyright and license files
+# for the code accessed (or partly included) from contributed R-ports
+# and other sources
+#   see Rmetrics's copyright file
 
 
 ################################################################################
 # FUNCTION:               DESCRIPTION:
 #  armaSim                 Simulates an AIMA Time Series Process
-#  fARMA                   Class Representation for "fARMA" Objects
+#   fARMA                   Class Representation for "fARMA" Objects
 #  armaFit                 Fits Model Parameters for ARMA Time Series Process
 # METHODS:                DESCRIPTION:
 #  predict.fARMA           S3: Predicts from an ARMA Time Series Process 
 #  print.fARMA             S3: Prints a Fitted ARMA Time Series Object
-#  plot.fARIMA             S3: Plots Stylized Facts of a Fitted ARMA Object
+#  plot.fARMA              S3: Plots Stylized Facts of a Fitted ARMA Object
 #  summary.fARMA           S3: Analyzes a Fitted ARMA Time Series Object
-#  fitted.vales.fARMA      S3: Returns Fitted Values from a Fitted ARMA Object
+#  fitted.values.fARMA     S3: Returns Fitted Values from a Fitted ARMA Object
 #  residuals.fARMA         S3: Returns Residuals from a Fitted ARMA Object
+# FUNCTION:               DESCRIPTION:
+#  armaTrueacf             True ARMA Autocorrelation Function
+#  armaRoots               Roots of the ARMA Characteristic Polynomial
 ################################################################################
 # BUILTIN - PACKAGE DESCRIPTION:
 #  Package: fracdiff
@@ -195,6 +188,9 @@ title = "", description = "", ...)
     
     # FUNCTION:
     
+    # Transform x:
+    ## x <<- as.ts(as.vector(x))
+    
     # Call:
     fit = NULL
     call = match.call()
@@ -207,6 +203,10 @@ title = "", description = "", ...)
     
     # Get Series:
     ts = eval(formula[[2]], + sys.parent())
+    
+    # Allow for univariate 'timeSeries' Objects:
+    # Added 2004-09-04 DW
+    if (class(ts) == "timeSeries") ts = as.vector(ts)
 
     # Check for Method:
     # ar.method       = c("yw", "burg", "ols", "mle")
@@ -572,10 +572,10 @@ title = "", description = "", ...)
         method = method[1], fixed = fixed, M = M, h = h, ...)  
     # "ols" specific:
     if (method == "ols") {
-	    se.coef = unlist(fit$se.coef)
-	    if (include.mean){
-		    ols.mean = se.coef[1]
-		    fit$se.coef = c(se.coef[-1], ols.mean) } } 
+        se.coef = unlist(fit$se.coef)
+        if (include.mean){
+            ols.mean = se.coef[1]
+            fit$se.coef = c(se.coef[-1], ols.mean) } } 
     fit$call = call
     fit$tsmodel = tsmodel
     fit$class = "fARMA"
@@ -587,7 +587,7 @@ title = "", description = "", ...)
         formula = as.formula(formula), 
         method = as.character(method),
         parameter = list(include.mean = include.mean, fixed = fixed, 
-        	fracdiff.M = fracdiff.M, fracdiff.h = fracdiff.h),
+            fracdiff.M = fracdiff.M, fracdiff.h = fracdiff.h),
         data = as.data.frame(x),
         fit = fit,
         residuals = as.vector(fit$residuals),
@@ -617,8 +617,8 @@ doplot = TRUE, doprint = TRUE, ...)
     
     # FRACDIFF:
     if (object$tsmodel == "fracdiff") {
-    	warning("Prediction for FRACDIFF not yet implemented")
-    	return(NA) }
+        warning("Prediction for FRACDIFF not yet implemented")
+        return(NA) }
     
     # Internal Function:
     predict.Arima = function (object, n.ahead = 1, newxreg = NULL, 
@@ -689,7 +689,7 @@ doplot = TRUE, doprint = TRUE, ...)
                     if (is.null(object$x.intercept)) xint = rep(0, nser)
                     else xint = object$x.intercept
                     x = rbind(sweep(newdata, 2, object$x.mean),
-                   		matrix(rep(0, nser), n.ahead, nser, byrow = TRUE))
+                        matrix(rep(0, nser), n.ahead, nser, byrow = TRUE))
                     if (p > 0) {
                         for(i in 1:n.ahead) {
                             x[n+i,] = ar[1,,] %*% x[n+i-1,] + xint
@@ -699,7 +699,7 @@ doplot = TRUE, doprint = TRUE, ...)
                     else {
                         pred = matrix(xint, n.ahead, nser, byrow=TRUE) }
                     pred = pred + matrix(object$x.mean, n.ahead, nser, 
-                    	byrow = TRUE)
+                        byrow = TRUE)
                     colnames(pred) = colnames(object$var.pred)
                     if (se.fit) {
                         warning(
@@ -739,10 +739,10 @@ doplot = TRUE, doprint = TRUE, ...)
         # Predict "arma":
         if (object$tsmodel == "arma") {
             object$arma = c(
-            	object$order[1], 
-            	object$order[2], 0, 0, 1, 0, 0)
+                object$order[1], 
+                object$order[2], 0, 0, 1, 0, 0)
             object$mod = makeARIMA(
-            	phi = object$coef[1:object$order[1]], 
+                phi = object$coef[1:object$order[1]], 
                 theta = object$coef[(object$order[1]+1):sum(object$order)], 
                 Delta = numeric(), 
                 kappa = 1e6)
@@ -794,15 +794,15 @@ doplot = TRUE, doprint = TRUE, ...)
     
     # Plot History:   
     if (doplot) {
-	    pred.mean = pred$pred
-	    npred = length(pred.mean)
-	    ylim = range( c(data[(n-n.back+1):n], pred.mean), na.rm = TRUE)
-	    ylim = range(ylim, lower, upper, na.rm = TRUE)   
-	    ylab = paste("Series: ", object$series)
-	    plot(ts(c(data[(n-n.back+1):n], pred.mean[1], rep(NA, npred-1)), 
-	        end = tsp(data)[2] + npred/freq, f = freq), ylim = ylim, 
-	        ylab = ylab)
-	    title(main = paste(object$tstitle)) }
+        pred.mean = pred$pred
+        npred = length(pred.mean)
+        ylim = range( c(data[(n-n.back+1):n], pred.mean), na.rm = TRUE)
+        ylim = range(ylim, lower, upper, na.rm = TRUE)   
+        ylab = paste("Series: ", object$series)
+        plot(ts(c(data[(n-n.back+1):n], pred.mean[1], rep(NA, npred-1)), 
+            end = tsp(data)[2] + npred/freq, f = freq), ylim = ylim, 
+            ylab = ylab)
+        title(main = paste(object$tstitle)) }
          
     # Confidence Intervals:
     xx = tsp(data)[2] + (1:npred)/freq
@@ -814,7 +814,7 @@ doplot = TRUE, doprint = TRUE, ...)
     
     # Mean:
     lines(ts(pred.mean, start=tsp(data)[2]+1/freq, f = freq), lty = 1, 
-    	col = 4)
+        col = 4)
    
     # Printout:
     nconf = length(conf)
@@ -1070,5 +1070,109 @@ function(object, ...)
 }
 
 
+################################################################################
+# FUNCTION:                 DESCRIPTION:
+#  armaTrueacf               True ARMA Autocorrelation Function
+#  armaRoots                 Roots of the ARMA Characteristic Polynomial
+################################################################################
+
+
+armaTrueacf = 
+function(model, lag.max = 20, type = "correlation", doplot = TRUE)
+{   # A function implemented by Diethelm Wuertz
+
+    # Description:
+    #   A synonyme to ARMAacf
+
+    # Notes:
+    #   A synonyme for arma.tacf under R. See R's .First.lib.
+    #   Implemented from ARMAacf
+    
+    # FUNCTION:
+    
+    # Settings:
+    lag = 0:lag.max
+    result = NA
+    if (type=="partial" || type=="p" || type=="both" || type=="b") {
+        main = ylab = "True PACF"
+        lag = 1:lag.max
+        pacf = ARMAacf(model$ar, model$ma, lag.max=lag.max, 
+            pacf=TRUE)
+        result = data.frame(cbind(lag, pacf))
+        if (doplot) {
+            plot(x=lag, y=pacf, type = "n", xlab = "Lag", 
+                ylab = ylab, main = main, 
+                ylim = c(min(c(pacf, 0)), 1) )
+            lines(x = lag, y = pacf, type = "h")
+            abline(h = 0)}}
+    if (type == "correlation" || type == "c" || type == "both" || type=="b") {
+        main = ylab = "True ACF"
+        lag = 0:lag.max
+        acf = ARMAacf(model$ar, model$ma, lag.max=lag.max, 
+            pacf=FALSE)
+        result = data.frame(cbind(lag, acf))
+        if (doplot) {
+            plot(x=lag, y = acf, type = "n", xlab = "Lag", 
+                ylab = ylab, main = main, 
+                ylim = c(min(c(acf, 0)), 1) )
+            lines(x=lag, y=acf, type = "h")
+            abline(h = 0) } }   
+            
+    # Return Value:
+    result
+}
+
+
 # ------------------------------------------------------------------------------
+
+
+armaRoots = 
+function(coefficients, n.plot = 400, digits = 4, ...)
+{   # A function implemented by Diethelm Wuertz
+
+    # Description:
+    #   Calculates the roots of a characteristc polynomial
+
+    # FUNCTION:
+    
+    # Algorithm:
+    root = polyroot(c(1, -coefficients))
+    real.root = Re(root)
+    im.root = Im(root)
+    xrange = range(real.root)
+    xrange = c(xrange[1] - 1.2*abs(xrange[1]), 
+        xrange[2]+1.2 * abs(xrange[2]))
+    xplot = seq(xrange[1], xrange[2], length = n.plot)
+    fpoly = 1
+    for(i in 1:length(coefficients)) {
+        fpoly = fpoly - xplot^i * coefficients[i] }
+    plot(xplot, fpoly, type = "l", xlab = "B", ylab = "Function", ...)
+    title(main = "Polynomial Function vs. B")
+    abline(h = 0)
+    distance = sqrt(real.root^2 + im.root^2)
+    root.mat = cbind(round(real.root, digits = digits),
+        round(im.root, digits = digits), 
+        round(distance, digits = digits))
+    dimnames(root.mat) = list(1:nrow(root.mat), 
+        c("re", "im", "dist"))
+    size.limit = max(abs(real.root), 1.5, abs(im.root))
+    plot(root, xlim = c( - size.limit, size.limit),
+        ylim = c( - size.limit, size.limit), 
+        xlab = "", ylab = "", ...)
+    x = (2*pi/360)*(0:360)
+    # symbols(0, 0, circles = 1, add = TRUE, inches = FALSE, col = 6)
+    lines(sin(x), cos(x))
+    abline(h = 0)
+    abline(v = 0)
+    title("Roots and Unit Circle", 
+        xlab = "Real Part", ylab = "Imaginary Part")
+    result = root.mat
+        
+    # Return Value:
+    data.frame(result)
+}
+
+
+# -----------------------------------------------------------------------------
+
 

@@ -1,6 +1,6 @@
-\name{armaModelling}
+\name{ArmaModelling}
 
-\alias{armaModelling}
+\alias{ArmaModelling}
 
 \alias{fARMA}
 \alias{fARMA-class}
@@ -17,29 +17,38 @@
 \alias{fitted.values.fARMA}
 \alias{residuals.fARMA}
 
+\alias{armaRoots}
+\alias{armaTrueacf}
 
-\title{Integrated ARIMA Time Series Modelling}
+
+\title{Integrated ARMA Time Series Modelling}
 
 
 \description{
 
-	A collection of simple to use functions to model univariate autoregressive 
-	moving average time series processes, including time series simulation, 
-	parameter estimation, diagnostic analysis of the fit, and predictions 
-	of future values.
+	A collection and description of simple to use functions to model 
+	univariate autoregressive moving average time series processes, 
+	including time series simulation, parameter estimation, diagnostic 
+	analysis of the fit, and predictions of future values.
 	\cr
 		
-	The function can be called with the following formula arguments:
+	The functions are:
 	
-	\tabular{rll}{
-		1	\tab 	\code{x ~ ar()} 	    
-			\tab  	autoregressive time series processes, \cr
-		2	\tab 	\code{x ~ arma()} 	
-			\tab  	autregressive moving average processes,\cr
-		3	\tab 	\code{x ~ arima()} 	
-			\tab  	autoregressive integrated moving average processes, and \cr
-		4	\tab 	\code{x ~ fracdiff()}
-			\tab  	fractionally integrated ARMA processes. }
+	\tabular{ll}{
+	\code{armaSim} \tab Simulates an artificial ARMA time series process, \cr
+	\code{armaFit} \tab Fits the parameters of an ARMA time series process,\cr
+	\code{predict} \tab Forecasts an ARMA time series process, \cr
+	\code{print} \tab S3 Print Method, \cr
+	\code{plot} \tab S3 Plot Method, \cr
+	\code{summary} \tab S3 Summary Method. }
+	
+	The function \code{armaFit} allows for the following formula arguments:
+	
+	\tabular{ll}{
+	\code{x ~ ar()} \tab autoregressive time series processes, \cr
+	\code{x ~ arma()} \tab autoregressive moving average processes,\cr
+	\code{x ~ arima()} \tab autoregressive integrated moving average processes, and \cr
+	\code{x ~ fracdiff()} \tab fractionally integrated ARMA processes. }
 	
 	For the first and third selection \code{x ~ ar()} or \code{x ~ arima()}
 	the function uses the AR and ARIMA modelling as implemented in 
@@ -52,23 +61,39 @@
   	specifying the formula \code{x~arima(p,d,q)} in the proper way, 
   	i.e. setting \code{d=0} and choosing the orders of \code{p} and 
   	\code{q} as zero in agreement with the desired model specification.
-
+  	
+  	Alternatively, one can use the functions from R's \code{"stats"}
+  	package:
+  	
+  	\tabular{ll}{
+	\code{arima.sim} \tab Simulates from an ARIMA time series model, \cr
+	\code{ar, arima, arima0} \tab Fits an AR, ARIMA model to a univariate time series,\cr
+	\code{predict.ARIMA} \tab Forecast from models fitted by "arima", \cr
+	\code{tsdiag} \tab Plots time-series diagnostics. }
+	
+	In addition there are two functions for the analysis of the true  
+    ARMA process. The first investigates the characteristic polynomial
+    and the second the true autocorrelation function:
+		
+	\tabular{ll}{
+	\code{armaRoots} \tab Roots of the characteristic ARMA polynomial, \cr
+	\code{armaTrueacf} \tab True autocorrelation function of an ARMA process. }
+ 	
 }
 	
 	
 \note{
 	
-	There is nothing really new in this package.
-	The benefit you will get with this collection is, that all functions 
-	have a common argument list with a formula to specify the model 
-	and presetted arguments for the specification of the algorithmic 
-	method. For users who have already modeled GARCH processes with 
-	SPlus, this approach will be quite natural.
+	There is nothing really new in this package. The benefit you will 
+	get with this collection is, that all functions have a common 
+	argument list with a formula to specify the model and presetted 
+	arguments for the specification of the algorithmic method. For 
+	users who have already modeled GARCH processes with SPlus, this 
+	approach will be quite natural.
 	
-	On the other hand, the user can still use the underlying 
-	functions from the \code{ts}, \code{tseries}, or 
-	\code{fracdiff} packages. No function from these packages
-	is masked or overwritten.
+	On the other hand, the user can still use the underlying functions 
+	from the \code{ts}, \code{tseries}, or \code{fracdiff} packages. No 
+	function from these packages is masked or overwritten.
 	
 	The output of the \code{predict}, \code{print} and \code{summary}
 	methods have all the same style of format with some additional 
@@ -80,7 +105,7 @@
 
 
 \usage{
-armaSim(model = list(ar=c(0.5, -0.5), d=0, ma=0.1), n = 100, innov = 
+armaSim(model = list(ar = c(0.5, -0.5), d = 0, ma = 0.1), n = 100, innov = 
 	NULL, n.start = 100, start.innov = NULL, rand.gen = rnorm, \dots) 
 
 armaFit(formula = x ~ arima(2, 0, 1), 
@@ -95,11 +120,18 @@ armaFit(formula = x ~ arima(2, 0, 1),
 \method{plot}{fARMA}(x, gof.lag, reference.grid = TRUE, col = "steelblue4", \dots)
 \method{summary}{fARMA}(object, doplot = TRUE, \dots)
 
+armaRoots(coefficients, n.plot = 400, digits = 4, \dots) 
+armaTrueacf(model, lag.max = 20, type = "correlation", doplot = TRUE) 
 }
 
 
 \arguments{
  
+	\item{coefficients}{	
+	    [armaRoots] - \cr
+		a numeric vector with the coefficients of the characterisitic 
+		polynomial.
+		}
 	\item{col, reference.grid}{
 		[plot] - \cr
 		a character string to set the plot color, by default 
@@ -110,7 +142,14 @@ armaFit(formula = x ~ arima(2, 0, 1),
 		two character strings, assigning a title and a brief description
 		to an \code{"fARMA"} object.
 		}
+	\item{digits}{	
+		[armaRoots] - \cr
+		output precision, an integer value.
+		}
 	\item{doplot}{
+		[armaRoots] - \cr
+		a logical. Should a plot be displayed?
+		\cr
 		[predict][summary] - \cr
 	  	is used by the \code{predict} and \code{summary} methods. By default,
 	  	this value is set to \code{TRUE} and thus the function calls generate 
@@ -183,6 +222,11 @@ armaFit(formula = x ~ arima(2, 0, 1),
 		Missing values are not allowed. By default the normal
 		random number generator will be used.
 		}
+	\item{lag.max}{
+		[armaTrueacf] - \cr
+		maximum number of lags at which to calculate the acf or 
+		pacf, an integer value by default 20.
+		}
 	\item{method}{
 		[armaFit] - \cr
 	    denotes the method used to fit the model by a character string.
@@ -201,7 +245,7 @@ armaFit(formula = x ~ arima(2, 0, 1),
 	    Additional arguments required by the optimization algorithm have 
 	    to be passed through the \code{dots} argument.
     	} 
-    \item{model}{
+	\item{model}{
     	[armaSim] - \cr
 		a list with one (AR), two (ARMA) or three (ARIMA, FRACDIFF) 
 		elements . \code{ar} is a numeric vector giving the AR coefficients, 
@@ -213,6 +257,11 @@ armaFit(formula = x ~ arima(2, 0, 1),
 		FRACDIFF models. By default an ARIMA(2, 0, 1) model with 
 		coefficients \code{ar=c(0.5, -0.5)} and \code{ma=0.1} will be 
 		generated.
+		\cr
+		[armaTrueacf] - \cr
+		a specification of the ARMA model with two elements:
+		\code{model$ar} is the vector of the AR coefficients, and 
+		\code{model$ma} is the vector of the MA coefficients.
 		}
    	\item{n}{
    		[armaSim] - \cr
@@ -226,6 +275,11 @@ armaFit(formula = x ~ arima(2, 0, 1),
 		\code{conf}. If a forecast plot is desired, which is the
 		default and expressed by \code{doplot=TRUE}, then \code{n.back} 
 		sets the number of time steps back displayed in the graph.
+		}
+	\item{n.plot}{	
+		[armaRoots] - \cr
+		the number of data point to plot the unit circle;
+		an integer value.
 		}
 	\item{n.start}{
 		[armaSim] - \cr
@@ -254,6 +308,14 @@ armaFit(formula = x ~ arima(2, 0, 1),
 	    is a univariate time series or vector of innovations to be used 
 	    as start up values. Missing values are not allowed.
 	    }
+	\item{type}{
+		[armaTrueacf] - \cr
+		a character string, "correlation" to compute the true 
+		autocorrelation function, "partial" to compute the true
+		partial autocorrelation function, or "both" if both
+		functions are desired. The start of one of the strings 
+		will suffice.
+		} 
 	\item{x}{
   		[print][plot] - \cr
 	    is an object of class \code{fARMA} returned by the
@@ -298,8 +360,20 @@ armaFit(formula = x ~ arima(2, 0, 1),
     \item{parameters}{
     	named parameters or coefficients of the fitted model.
     	}
-    \item{title}[
-    	a title string.}
+    \item{title}{
+    	a title string.
+    	}
+    	
+    \code{armaRoots} 
+	\cr
+	returns a three column data frame with the real, the imaginary part 
+	and the radius of the roots. The number of rows corresponds
+	to the coefficients.
+	
+	\code{armaTrueacf}
+	\cr
+	returns a two column data frame with the lag and the correlation 
+	function. 
 
 }
     	    	
@@ -496,19 +570,19 @@ Haslett J. and Raftery A.E. (1989);
 
 	M. Plummer and B.D. Ripley for \code{ar} functions and code,\cr
 	A. Trapletti for \code{arma} functions and code,\cr
-	B.D. Ripley for \code{arima} functions and code, \cr
+	B.D. Ripley for \code{arima} and \code{ARMAacf} functions and code, \cr
 	C. Fraley and F. Leisch for \code{fracdiff} functions and code, and \cr
-	D. Wuertz for this \R-port.
+	Diethelm Wuertz for the Rmetrics \R-port.
 	
 }
 
 
 \seealso{
-  
-	\code{\link{armaStatistics}}, 
-	\code{\link{garchModelling}}, 
-	\code{\link{randomInnovations}},
-  	\code{\link{regressionModelling}}.
+
+	\code{\link{GarchModelling}}, 
+	\code{\link{EquationsModelling}},
+	\code{\link{RandomInnovations}},
+  	\code{\link{RegressionModelling}}.
   	
 }
 
@@ -541,6 +615,20 @@ Haslett J. and Raftery A.E. (1989);
    Continue = xmpSeries("Press any key > ") 
    # 5 Step ahead Forecasts:
    predict(fit, n.ahead = 5)
+   
+## armaRoots -
+   xmpSeries("\nNext: Roots of the Characteristic Polynomial > ")
+   # Calculate and plot the  of an ARMA process:
+   par(mfrow = c(2, 2), cex = 0.7)
+   coefficients = c(-0.5, 0.9, -0.1, -0.5)
+   armaRoots(coefficients)
+   
+## armaTrueacf -
+   xmpSeries("\nNext: True ACF of an ARMA Process > ")
+   model = list(ar = c(0.3, +0.3), ma = 0.1)
+   armaTrueacf(model)
+   model = list(ar = c(0.3, -0.3), ma = 0.1)
+   armaTrueacf(model)
 }
 
 

@@ -1,0 +1,372 @@
+\name{GarchModelling}
+
+\alias{GarchModelling}
+
+\alias{fGARCH}
+\alias{fAPARCH}
+
+\alias{garchSim}
+\alias{garchFit}
+\alias{aparchSim}
+\alias{aparchFit}
+
+\alias{predict.fGARCH}
+\alias{print.fGARCH}
+\alias{summary.fGARCH}
+\alias{print.summary.fGARCH}
+\alias{plot.fGARCH}
+\alias{fitted.values.fGARCH}
+\alias{residuals.fGARCH}
+
+\alias{predict.fAPARCH}
+\alias{print.fAPARCH}
+\alias{summary.fAPARCH}
+\alias{print.summary.fAPARCH}
+\alias{plot.fAPARCH}
+%\alias{fitted.values.fAPARCH}
+%\alias{residuals.fAPARCH}
+
+
+\title{Univariate GARCH Time Series Modelling}
+
+
+\description{
+
+    A collection and description of functions to simulate artificial 
+    ARCH time series processes, to fit the parameters of univariate 
+    time series to ARCH models, to perform a diagnostic analysis of 
+    the fit, and to predict future values of the time series.
+    \cr
+    
+    The family of GARCH time series models includes the following 
+    processes:
+    
+    \tabular{ll}{
+    \code{garch} \tab generalized AR conditional heteroskedastic models, \cr
+    \code{aparch} \tab asymmetretic power ARCH models. }
+
+    \bold{Note:} This collection is currently under a complete
+    reconstruction. It will come back soon allowing for general
+    ARMA-GARCH modelling and forecasting, including ARMA 
+    specifiations for the mean and GARCH/APARCH specifications 
+    for the variance. 
+
+}
+
+
+\usage{
+garchSim(model = list(omega = 1e-6, alpha = 0.1, beta = 0.8, 
+    mu = 0), n = 100, innov = NULL, n.start = 100, 
+    start.innov = NULL, rand.gen = rnorm, \dots)
+garchFit(x, order = c(1, 1),  \dots)
+
+\method{print}{fGARCH}(x, \dots)
+\method{summary}{fGARCH}(object, \dots)
+\method{print.summary}{fGARCH}(x, \dots)
+
+aparchSim(model = list(omega = 1.0e-6, alpha = 0.1, gamma = 0, 
+    alpha.lags = 1, beta = 0.8, beta.lags = 1, delta = 1), n = 100, 
+    innov = rand.gen(n, ...), n.start = 100, start.innov = NULL, 
+    rand.gen = rnorm, \dots)    
+aparchFit(x, order = list(alpha.lags = 1, beta.lags = 1, delta = 2), 
+    opt = list(gamma = FALSE, delta = FALSE, disparm = FALSE), 
+    distribution = c("norm", "t", "symstb"), disparm = c(1, 4, 1.9), 
+    n.cond = NULL, doprint = TRUE, method = "Nelder-Mead", \dots)
+
+\method{print}{fAPARCH}(x, \dots)
+\method{summary}{fAPARCH}(object, \dots)
+\method{print.summary}{fAPARCH}(x, \dots)
+}
+
+
+\arguments{
+
+    \item{disparm}{ 
+        the distribution parameter. For the distribution
+        "norm" \code{disparm} will not be used, for the "Student-t"
+        distribution the distribution parameter is the number of degrees
+        of freedom, and for the symmetric stable "symstb" distribution
+        the distribution parameter is the tail index alpha.
+        }
+    \item{distribution}{
+        a character string describing the distribution of innovations. 
+        By default the optimization is based on gaussian log likelihood 
+        parameter optimization denoted by "norm". Alternatively, a 
+        "Student-t" or "symmetric stable", "symstb" can be chosen.
+        }
+    \item{doprint}{
+        a logical, if set to \code{TRUE}, the iteration
+        path of the optimization will be printed.
+        }
+    \item{innov}{
+        a univariate time series or vector of innovations to 
+        produce the series. If not provided, \code{innov} will 
+        be generated using \code{rand.gen}. Missing values are 
+        not allowed. A numeric vector.
+        }   
+    \item{method}{
+        a character string denoting the optimization method,
+        by default "Nelder-Mead".
+        }
+     \item{model}{
+        List of GARCH model parameters: 
+        \code{omega} the constant coefficient of the variance equation, 
+            must be defined; 
+        \code{alpha} the vector of autoregressive coefficients, must be 
+            defined; 
+        \code{beta} the vector of variance coefficients, optional; 
+        \code{mu}, the mean value.
+        \cr
+        List of APARCH model parameters:
+        \code{omega} the omega parameter, a numeric value;
+        \code{alpha} the "ar" coefficients, a numeric vector;
+        \code{gamma} the asymmetry coefficients, a numeric vector of same 
+            length as "alpha";
+        \code{alpha.lags} an integer vector denoting to which lags the 
+            "alpha" coefficients belong;
+        \code{beta} the "ma" coefficients, a numeric vector;
+        \code{beta.lags} an integer vector denoting to which lags the 
+            "beta" coefficients belong;
+        \code{delta} the "delta" exponent.
+        The default model is Taylor Schwert GARCH(1,1) model.
+        }
+    \item{n}{
+        length of output series, an integer value.
+        }
+    \item{n.cond}{
+        number of omitted start terms on which the MLE is conditioned.
+        If set to NA, the number of terms is automatically set to the
+        sum of the two largest lags of the \code{alpha} and \code{beta}
+        coefficients.
+        }
+    \item{n.start}{
+        the number of start-up values. The start-up innovations 
+        will be generated by \code{rand.gen} if \code{start.innov} 
+        is not provided. An integer value by default 100.
+        Missing values are not allowed.
+        }
+    \item{object}{
+        [summary] - 
+        a fitted GARCH or APARCH time series object.
+        }
+    \item{opt}{
+        vector of logicals, determins which parameters will be optimized.
+        By default, the \code{gamma} coefficients, the \code{delta}
+        exponent and the \code{disparm} distribution parameters are
+        excluded from the optimization process. 
+        Note, the \code{alpha} and \code{beta} coefficients cannot be
+        excluded from optimization.
+        }
+    \item{order}{
+        a specification list for the GARCH or APARCH model: 
+        \cr
+        [garch] -
+        A two dimensional integer vector giving the orders of the
+        model to fit. \code{order[1]} corresponds to the GARCH part and
+        \code{order[2]} to the ARCH part.
+        The default specification belongs to a symmetric GARCH(1,1) model.
+        \cr
+        [aparch] - 
+        \code{alpha.lags} an integer vector denoting to which lags the 
+            "alpha" coefficients belong, by default 1;
+        \code{beta.lags} an integer vector denoting to which lags the 
+            "beta" coefficients belong, by default 1;
+        \code{gamma} -- symmetry coefficients, a numeric vector of same 
+            length as "alpha.lags", by default 0;
+        \code{delta} -- the "delta" exponent, by default 2.
+        The default specification belongs to a symmetric GARCH(1,1) model.
+        }
+    \item{rand.gen}{
+        optional, a function to generate the innovations.
+        }   
+    \item{start.innov}{ 
+        a univariate time series or vector of innovations to be 
+        used as start up values. Missing values are not allowed.
+        A numeric vector.
+        }
+    \item{x}{
+        an univariate vector or time series. \cr
+        [print][print.summary] - 
+        a fitted GARCH or APARCH time series object.
+        }
+    \item{\dots}{
+        additional arguments to be passed.
+        For \code{garchSim} passed to \code{rand.gen}, most usefully,
+        the standard deviation of the innovations generated by \code{rnorm}
+        can be specified by \code{sd}.
+        For \code{garchFit} passed to\code{\link{qr}} when computing
+        the asymptotic standard errors of \code{coef}.
+        }   
+
+}
+
+
+\details{
+  
+    \bold{GARCH Modelling:}
+    \cr\cr
+    \code{garchFit} uses a Quasi-Newton optimizer to find the maximum
+    likelihood estimates of the conditionally normal model. The first
+    max(p,q) values are assumed to be fixed. The optimizer uses a hessian
+    approximation computed from the BFGS update. Only a Cholesky factor
+    of the Hessian approximation is stored. For more details see Dennis
+    et al. (1981), Dennis and Mei (1979), Dennis and More (1977), and
+    Goldfarb (1976). The gradient is either computed analytically or
+    using a numerical approximation.
+    \cr
+    \code{[tseries:garch]}
+    \cr
+    
+    \bold{APARCH Modelling:}
+    \cr\cr
+    \code{aparchFit} allows to estimate a whole family of ARCH models.
+    For Engle's ARCH(p) model one has to set \code{beta.lags=1}, beta=0, 
+    and \code{opt$beta=FALSE}. 
+    For Bollerslev's GARCH(p,q) model, just use it.
+    For a Taylor-Schwert TS-GARCH(p,q) model one has to set \code{delta=1}.
+    For Gosten et al.'s GJR(p,q) model one has to set \code{gamma} and 
+    code{opt.gamma=TRUE}.
+    For the extimation of parameters from asymmetric models and models 
+    with unknown \code{delta} exponents different from 2 one has to set 
+    the arguments \code{opt$gamma=TRUE} and \code{opt$delta=TRUE}.
+    In addition from three types of innovations, normal distributed,
+    Student-t and symmetric stable can be chosen.
+    
+}
+
+
+\value{
+
+    \code{garchSim}\cr
+    \code{aparchSim}
+    \cr
+    return objects of class \code{ts}.
+
+    \code{garchFit}\cr
+    \code{aparchFit}
+    \cr
+    return lists of class \code{fGARCH} 
+    and \code{fAPARCH}, respectivley with at least the following 
+    components:
+
+    \item{order}{
+        the order of the fitted model.
+        }
+    \item{coef}{
+        estimated GARCH coefficients for the fitted model.
+        }
+    \item{n.likeli}{
+        the negative log-likelihood function evaluated at the
+        coefficient estimates (apart from some constant).
+        }
+    \item{n.used}{
+        the number of observations of \code{x}.
+        }
+    \item{residuals}{
+        the series of residuals. (Not available for APARCH models.)
+        }
+    \item{fitted.values}{
+        the bivariate series of conditional standard deviation 
+        predictions for \code{x}. (Not available for APARCH models.)
+        }
+    \item{series}{
+        the name of the series \code{x}.
+        }
+    \item{frequency}{
+        the frequency of the series \code{x}.
+        }
+    \item{call}{
+        the call of the \code{garch} function.
+        }
+    \item{asy.se.coef}{
+        the asymptotic-theory standard errors of the coefficient 
+        estimates.
+        }
+    
+}
+
+
+\references{
+
+Bera A.K., Higgins M.L. (1993);
+    \emph{ARCH Models: Properties, Estimation and Testing},
+    J. Economic Surveys 7, 305--362.
+  
+Bollerslev T. (1986);
+    \emph{Generalized Autoregressive Conditional Heteroscedasticity},
+    Journal of Econometrics 31, 307--327.
+
+Engle R.F. (1982);
+    \emph{Autoregressive Conditional Heteroscedasticity with Estimates 
+    of the Variance of United Kingdom Inflation},
+    Econometrica 50, 987--1008.
+
+Dennis J.E., Gay D.M., Welsch R.E. (1981);
+    \emph{Algorithm 573 -- An Adaptive Nonlinear Least-Squares Algorithm};
+    ACM Transactions on Mathematical Software 7, 369--383.
+
+Dennis J.E., Mei H.H.W. (1979);
+    \emph{Two New Unconstrained Optimization Algorithms which use 
+    Function and Gradient Values},
+    J. Optim. Theory Applic. 28, 453--482.
+
+Dennis J.E., More J.J. (1977);
+    \emph{Quasi-Newton Methods, Motivation and Theory};
+    SIAM Revue 19, 46--89.
+
+Goldfarb D. (1976);
+    \emph{Factorized Variable Metric Methods for Unconstrained Optimization},
+    Math. Comput. 30, 796--811.
+    
+}
+
+
+\author{
+
+    Adrian Trapletti for the \code{[tseries:garch]} function, \cr
+    D. M. Gay for the Fortran optimizer, \cr
+    Diethelm Wuertz for the Rmetrics \R-port. 
+     
+}
+
+
+\seealso{
+  
+    \code{\link{ArmaModelling}}.
+    
+}
+
+
+\examples{
+##  garchSim -
+##  garchFit -
+    xmpSeries("\nStart: Model Bollerslev's GARCH(1,1) Process >")
+    # Simulate a time series of length 1000:
+    ts = garchSim(model = list(omega = 1.0e-6, alpha = 0.1, beta = 0.8, 
+      h0 = 1.0e-7), n = 1000)
+    xmpSeries("\nNext: Estimate the parameters >")
+    fit = garchFit(ts, order = c(1, 1))
+    print(fit) 
+    xmpSeries("\nNext: Summary and Diagnostic Analysis >")
+    summary(fit)  
+
+##  aparchSim -
+##  aparchFit -
+    xmpSeries("\nNext: Subset TS-GARCH(1,5[1,5]), delta fixed >")
+    # Simulate a time series of length 1000:
+    ts = aparchSim(model = list(omega = 1e-6, alpha = 0.1, gamma = 0, 
+      alpha.lags=1, beta = c(0.5, 0.3), beta.lags = c(1, 5), delta = 1),
+      innov = rnorm(5000), start.innov = rnorm(1000))
+    par(mfrow = c(2, 2), cex = 0.6)
+    ts.plot(ts, main = "Subset TS GARCH(1,5) - Mormal")
+    acf(abs(ts), lag.max = 20)
+    xmpSeries("\nNext: Estimate the parameters >")
+    aparchFit(ts, order = list(alpha.lags = 1, beta.lags = c(1, 5), 
+      delta = 1), opt = list(gamma = FALSE, delta = FALSE, disparm = FALSE), 
+      doprint = FALSE)
+    # For more examples type: xmpfSeries() ...
+}
+
+
+\keyword{models}
+

@@ -14,11 +14,9 @@
 #
 
 
-# ------------------------------------------------------------------------------
-
-
 ################################################################################
 # 1 Filter available in the "base" package:
+
 
     # filter - 
     #	Applies linear filtering to a univariate time series or to 
@@ -29,6 +27,7 @@
     
 ################################################################################
 # 2 Filter available in the "pastecs" package:
+
 
     #
     # Package: pastecs
@@ -62,14 +61,10 @@
     
 ################################################################################
 # 3 Hodrick-Prescott Filter
-# R function available in "funSeries.R"
 
 
-# ------------------------------------------------------------------------------
-
-
-# Example:
-    # Compute the cyclical component in the US CPI data for monthly data
+	# R function available in "funSeries.R"
+	# Compute the cyclical component in the US CPI data for monthly data
     data(CPI.dat)
     logCPI = log(as.vector(CPI.dat[,2])) 
     cycCPI = logCPI - hpFilter(logCPI, 14400)
@@ -78,5 +73,5 @@
     ts.plot(cycCPI, xlab = "Index", col ="steelblue4"); grid()
 
 
-
+################################################################################
 

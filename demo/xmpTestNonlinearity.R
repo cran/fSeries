@@ -9,11 +9,10 @@
 #
 
 
-# ------------------------------------------------------------------------------
+################################################################################
+# 1. Teraesvirta Neural Network Test for Nonlinearity	
+	
 
-	
-# Teraesvirta Neural Network Test for Nonlinearity	
-	
 	# Time Series:
 	par(mfrow = c(2,2), cex = 0.6)
 	n = 1000
@@ -21,7 +20,9 @@
 	x = as.ts(x)
 	plot(x)
 	tnnTest(x)
-	Continue = readline("Press any key > ")
+	###
+	
+	
 	# Generate time series which is nonlinear in mean:
 	x[1] = 0.0
 	for (i in (2:n)) {
@@ -29,9 +30,12 @@
 	x = as.ts(x)
 	plot(x)
 	tnnTest(x)
-	Continue = readline("Press any key > ")
+	###
+	
 
-# White Neural Network Test for Nonlinearity:
+################################################################################
+# 2. White Neural Network Test for Nonlinearity:
+
 
 	# Time Series:
 	n = 1000
@@ -39,7 +43,9 @@
 	x = as.ts(x)
 	plot(x)
 	wnnTest(x)
-	Continue = readline("Press any key > ")	
+	###
+	
+	
 	# Generate time series which is nonlinear in mean:
 	x[1] = 0.0
 	for (i in (2:n)) 
@@ -47,4 +53,8 @@
 	x = as.ts(x)
 	plot(x)
 	wnnTest(x)
+	###
+	
+
+################################################################################
 
