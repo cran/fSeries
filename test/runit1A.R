@@ -1,0 +1,663 @@
+
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Library General Public
+# License as published by the Free Software Foundation; either
+# version 2 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Library General Public License for more details.
+#
+# You should have received a copy of the GNU Library General
+# Public License along with this library; if not, write to the
+# Free Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+# MA  02111-1307  USA
+
+# Copyrights (C)
+# for this R-port: 
+#   1999 - 2004, Diethelm Wuertz, GPL
+#   Diethelm Wuertz <wuertz@itp.phys.ethz.ch>
+#   info@rmetrics.org
+#   www.rmetrics.org
+# for the code accessed (or partly included) from other R-ports:
+#   see R's copyright and license files
+# for the code accessed (or partly included) from contributed R-ports
+# and other sources
+#   see Rmetrics's copyright file
+
+
+################################################################################
+# FUNCTION:               DESCRIPTION:
+#  'fARMA'                 S4 Class representation for "fARMA" objects
+#  armaSim                 Simulates an ARIMA time series process
+#  armaFit                 Fits parameters for ARMA Time Series process
+#  .arFit                   Internal function called by armaFit
+#  .arimaFit                Internal function called by armaFit
+#  .arfimaFit               Internal function called by armaFit
+# S3 METHOD:              PREDICTION:
+#  predict.fARMA           S3: Predicts from an ARMA time series prrocess 
+#  .arPpredict             Internal function called by predict.fARMA
+#  .arimaPpredict          Internal function called by predict.fARMA
+#  .arfimaPredict          Not yet implemented
+# S3 METHOD:              PRINT - SUMMARY - PLOT:
+#  print.fARMA             S3: Prints a fitted ARMA time series object
+#  plot.fARMA              S3: Plots stylized facts of a fitted ARMA object
+#  summary.fARMA           S3: Summarizes a fitted ARMA time series object
+# S3 METHOD:              ADDON:
+#  fitted.fARMA            S3: Returns fitted values from a fitted ARMA object
+#  coef.fARMA              S3: Returns coefficidents from a fitted ARMA object
+#  coefficients.fARMA      S3: Synonyme for coef.fARMA
+#  residuals.fARMA         S3: Returns residuals from a fitted ARMA object
+################################################################################
+
+################################################################################
+# FUNCTION:               DESCRIPTION:
+#  armaTrueacf             Returns True ARMA autocorrelation function
+#  armaRoots               Returns Roots of the ARMA characteristic polynomial
+################################################################################
+
+
+################################################################################
+
+
+test.helpFile = 
+function()
+{
+    # Help File:
+    helpFile = function() { 
+        example(ArmaModelling); return() }
+    checkIdentical(
+        target = class(try(helpFile())),
+        current = "NULL")
+
+    # Return Value:
+    return()    
+}
+
+
+# ------------------------------------------------------------------------------
+
+
+test.fARMA = 
+function()
+{   
+    # Slot Names:
+    Names = getSlots("fARMA")
+    target =  names(Names)
+    current = c(
+        "call",             
+        "formula", 
+        "method",     
+        "parameter",       
+        "data",             
+        "fit",     
+        "residuals",  
+        "fitted",   
+        "title",   
+        "description")
+    checkIdentical(target, current)
+   
+    # Return Value:
+    return()    
+}    
+
+
+# ------------------------------------------------------------------------------
+
+
+test.armaSim = 
+function()
+{   
+    # armaSim(model = list(ar = c(0.5, -0.5), d = 0, ma = 0.1), n = 100, 
+    #   positions = NULL, innov = NULL, n.start = 100, start.innov = NULL, 
+    #   rand.gen = rnorm, rseed = NULL, addControl = FALSE, ...) 
+    
+    # ts: ARMA(2,1):
+    ts = armaSim(n = 25)
+    print(ts)
+    ts = armaSim(n = 25, addControl = TRUE)
+    print(ts)
+    
+    # timeSeries: ARMA(2,1):
+    tS = armaSim(n = 12, positions = timeCalendar()) 
+    print(tS)
+    tS = armaSim(n = 12, positions = timeCalendar(), addControl = TRUE) 
+    print(tS)
+    
+    # ts: t-ARMA(2,1):
+    ts = armaSim(n = 25, rand.gen = rt, df = 4, rseed = 4711)
+    print(ts)
+    
+    # Return Value:
+    return()    
+}    
+    
+
+# ------------------------------------------------------------------------------
+
+
+test.ar2Fit = 
+function()
+{   
+    # Note, internally R's base function ar() is used
+    
+    # Simulate:
+    set.seed(1953)
+    x = armaSim(model = list(ar = c(0.5, -0.5)), n = 1000)
+    
+    # method = c("mle", "ols")
+    
+    # OLS Fit:
+    object = armaFit(formula = ~ ar(2), data = x, method = "ols")
+    print(object)
+    target = as.vector(round(coef(object), 1))
+    current = c(0.5, -0.5, 0)
+    checkEqualsNumeric(target, current)
+
+    # MLE Fit:
+    object = armaFit(formula = ~ ar(2), data = x, method = "mle")
+    print(object)
+    target = as.vector(round(coef(object), 1))
+    current = c(0.5, -0.5, 0)
+    checkEqualsNumeric(target, current)
+
+    # For the expert ...
+    # Note, also other methods can be used supported by ar():
+    
+    # Yule-Walker Fit:
+    object = armaFit(formula = ~ ar(2), data = x, method = "yw")
+    print(object)
+    target = as.vector(round(coef(object), 1))
+    current = c(0.5, -0.5, 0)
+    checkEqualsNumeric(target, current)
+
+    # Burg 1 Fit:
+    object = armaFit(formula = ~ ar(2), data = x, method = "burg1")
+    print(object)
+    target = as.vector(round(coef(object), 1))
+    current = c(0.5, -0.5, 0)
+    checkEqualsNumeric(target, current)
+
+    # Burg 2 Fit:
+    object = armaFit(formula = x ~ ar(2), data = x, method = "burg2")
+    print(object)
+    target = as.vector(round(coef(object), 1))
+    current = c(0.5, -0.5, 0)
+    checkEqualsNumeric(target, current)
+
+    # Note, also arma() or arima() formulas can be applied:
+    
+    # CSS-ML Fit:
+    object = armaFit(formula = ~ arima(2, 0, 0), data =  x, method = "CSS-ML")
+    print(object)
+    target = as.vector(round(coef(object), 1))
+    current = c(0.5, -0.5, 0)
+    checkEqualsNumeric(target, current)
+
+    # CSS Fit:
+    object = armaFit(formula = ~ arima(2, 0, 0), data = x, method = "CSS")
+    print(object)
+    target = as.vector(round(coef(object), 1))
+    current = c(0.5, -0.5, 0)
+    checkEqualsNumeric(target, current)
+
+    # ML Fit:
+    object = armaFit(formula = ~ arima(2, 0, 0), data = x, method = "ML")
+    print(object)
+    target = as.vector(round(coef(object), 1))
+    current = c(0.5, -0.5, 0)
+    checkEqualsNumeric(target, current)
+   
+    # Return Value:
+    return()    
+}
+
+
+# ------------------------------------------------------------------------------
+
+
+test.ar2Report = 
+function()
+{    
+    # Simulate:
+    set.seed(4711)
+    x = armaSim(model = list(ar = c(0.5, -0.5)), n = 1000)
+    
+    # Fit:
+    object = armaFit(formula = ~ ar(2), data =  x, method = "mle")
+    
+    # Report:
+    print(object)
+    
+    # Plot: Standardized Residuals, ACF, QQ-Plot, Ljung-Box p-Values
+    par(mfrow = c(2, 2), cex = 0.7)
+    plot(object, which = "all")
+    
+    # Summary:
+    summary(object, doplot = FALSE)
+    
+    # Get Values:
+    coefficients(object)
+    coef(object)
+    fitted(object) 
+    residuals(object) 
+    
+    # Predict:
+    predict(object)
+   
+    # Return Value:
+    return()    
+}
+
+  
+# ------------------------------------------------------------------------------
+
+
+test.ma2Fit = 
+function()
+{   
+    # Simulate:
+    set.seed(4711)
+    x = armaSim(model = list(d = 0, ma = c(0.5, -0.5)), n = 5000)
+    
+    # To Fit a MA Model use ma(q), arma(0,q) or arima(0, 0, q):
+    object = armaFit(formula = ~ ma(2), data = x)
+    print(object)
+    target = as.vector(round(coef(object), 1))
+    current = c(0.5, -0.5, 0)
+    checkEqualsNumeric(target, current)
+    
+    # Note, also arma() or arima() formulas can be applied:
+    
+    # CSS-ML Fit:
+    object = armaFit(formula = ~ arima(0, 0, 2), data = x, method = "CSS-ML")
+    print(object)
+    target = as.vector(round(coef(object), 1))
+    current = c(0.5, -0.5, 0)
+    checkEqualsNumeric(target, current)
+    
+    # CSS Fit:
+    object = armaFit(formula = ~ arima(0, 0, 2), data = x, method = "CSS")
+    print(object)
+    target = as.vector(round(coef(object), 1))
+    current = c(0.5, -0.5, 0)
+    checkEqualsNumeric(target, current)
+    
+    # ML fit:
+    object = armaFit(formula = ~ arima(0, 0, 2), data = x, method = "ML")
+    print(object)
+    target = as.vector(round(coef(object), 1))
+    current = c(0.5, -0.5, 0)
+    checkEqualsNumeric(target, current)
+    
+    # Return Value:
+    return()    
+}
+
+
+# ------------------------------------------------------------------------------
+
+
+test.ma2Report = 
+function()
+{        
+    # Simulate:
+    set.seed(4711)
+    x = armaSim(model = list(d = 0, ma = c(0.5, -0.5)), n = 5000)
+    
+    # To Fit a MA Model use ma(q), arma(0,q) or arima(0, 0, q):
+    object = armaFit(formula = ~ ma(2), data = x)
+    
+    # Report:
+    print(object)
+    
+    # Plot: Standardized Residuals, ACF, QQ-Plot, Ljung-Box p-Values
+    par(mfrow = c(2, 2), cex = 0.7)
+    plot(object, which = "all")
+    
+    # Summary:
+    summary(object, doplot = FALSE)
+    
+    # Get Values:
+    coefficients(object)
+    coef(object)
+    fitted(object)[1:10]
+    residuals(object)[1:10]
+    
+    # Predict:
+    predict(object)
+
+    # Return Value:
+    return()    
+}
+
+  
+# ------------------------------------------------------------------------------
+
+
+test.arma21Fit = 
+function()
+{
+    # Simulate:
+    set.seed(1985)
+    x = armaSim(model = list(ar = c(0.5, -0.5), ma = 0.1), n = 1000)
+    
+    # Fit:
+    object = armaFit(formula = ~ arima(2, 0, 1), data =  x, method = "mle")
+    print(object)
+    target = as.vector(round(coef(object), 1))
+    print(target)
+    current = c(0.5, -0.5, 0.1, 0)
+    checkEqualsNumeric(target, current)
+    
+    # Note, also arma() or arima() formulas can be applied:
+    
+    # CSS-ML Fit:
+    object = armaFit(formula = ~ arima(2, 0, 1), data =  x, method = "CSS-ML")
+    print(object)
+    target = as.vector(round(coef(object), 1))
+    print(target)
+    current = c(0.5, -0.5, 0.1, 0)
+    checkEqualsNumeric(target, current)
+    
+    # CSS Fit:
+    object = armaFit(formula = ~ arima(2, 0, 1), data =  x, method = "CSS")
+    print(object)
+    target = as.vector(round(coef(object), 1))
+    print(target)
+    current = c(0.5, -0.5, 0.1, 0)
+    checkEqualsNumeric(target, current)
+    
+    # ML Fit:
+    object = armaFit(formula = ~ arima(2, 0, 1), data =  x, method = "ML")
+    print(object)
+    target = as.vector(round(coef(object), 1))
+    print(target)
+    current = c(0.5, -0.5, 0.1, 0)
+    checkEqualsNumeric(target, current)
+    
+    # Return Value:
+    return()    
+}
+
+
+# ------------------------------------------------------------------------------
+
+
+test.arma21Report = 
+function()
+{            
+    # Simulate:
+    x = armaSim(model = list(ar = c(0.5, -0.5), ma = 0.1), n = 1000)
+    
+    # Fit:
+    object = armaFit(formula = ~ arima(2, 0, 1), data = x, method = "CSS-ML")
+     
+    # Report:
+    print(object)
+    
+    # Plot:
+    par(mfrow = c(2, 2), cex = 0.7)
+    plot(object, which = "all")
+    
+    # Summary:
+    summary(object, doplot = FALSE)
+    
+    # Get Values:
+    coefficients(object)
+    coef(object)
+    fitted(object)[1:10]
+    residuals(object)[1:10]
+    
+    # Predict:
+    predict(object)
+
+    # Return Value:
+    return()       
+}
+
+  
+# ------------------------------------------------------------------------------
+
+
+test.arima211Fit = 
+function()
+{
+    # Simulate:
+    set.seed(4711)
+    x = armaSim(model = list(ar = c(0.5, -0.5), d = 1, ma = 0.1), n = 1000)
+    
+    # CSS-ML Fit:
+    object = armaFit(formula = ~ arima(2, 1, 1), data = x, method = "CSS-ML")
+    print(object)
+    target = as.vector(round(coef(object), 1))
+    print(target)
+    current = c(0.5, -0.5, 0)
+    checkEqualsNumeric(target, current)
+    
+    # CSS Fit:
+    object = armaFit(formula = ~ arima(2, 1, 1), data = x, method = "CSS")
+    print(object)
+    target = as.vector(round(coef(object), 1))
+    print(target)
+    current = c(0.5, -0.5, 0)
+    checkEqualsNumeric(target, current)
+    
+    # ML Fit:
+    object = armaFit(formula = ~ arima(2, 1, 1), data = x, method = "ML")
+    print(object)
+    target = as.vector(round(coef(object), 1))
+    print(target)
+    current = c(0.5, -0.5, 0)
+    checkEqualsNumeric(target, current)
+    
+    # Return Value:
+    return()    
+}
+
+
+# ------------------------------------------------------------------------------
+
+
+test.arima211Report = 
+function()
+{               
+    # Simulate:
+    set.seed(4711)
+    x = armaSim(model = list(ar = c(0.5, -0.5), d = 1, ma = 0.1), n = 1000)
+    
+    # mle Integrated ARMA Fit:
+    object = armaFit(formula = ~ arima(2, 1, 1), data = x)
+    
+    # Report:
+    print(object)
+    
+    # Plot:
+    par(mfrow = c(2, 2), cex = 0.7)
+    plot(object, which = "all")
+    
+    # Summary
+    summary(object, doplot = FALSE)
+    
+    # Get Values:
+    coefficients(object)
+    coef(object)
+    fitted(object)[1:10]
+    residuals(object)[1:10]
+    
+    # Predict:
+    predict(object)[1:10]           # CHECK
+    
+    # Return Value:
+    return()    
+}
+
+  
+# ------------------------------------------------------------------------------
+
+
+test.arfima00Fit = 
+function()
+{
+    # Simulate:
+    set.seed(4711)
+    x = armaSim(model = list(d = 0.3), n = 1000)
+    
+    # Fit:
+    object = armaFit(formula = ~ arfima(0, 0), data = x)    
+    print(object)
+    target = as.vector(round(coef(object), 1))
+    print(target)
+    current = 0.3
+    checkEqualsNumeric(target, current)
+    
+    # Parameter:
+    target = unlist(object@parameter)
+    print(target)
+    current = c(include.mean = 1, M = 100, h = -1)
+    checkIdentical(target, current)
+    
+    # Return Value:
+    return()    
+}
+
+
+# ------------------------------------------------------------------------------
+
+
+test.arfima00Report = 
+function()
+{               
+    # Simulate:
+    set.seed(4711)
+    x = armaSim(model = list(d = 0.3), n = 1000)
+    
+    # Fit:
+    object = armaFit(formula = ~ arfima(0, 0), data = x, M = 50, h = -1)    
+    
+    # Report:
+    print(object)
+    
+    # Plot:
+    # plot(object, which = "all")         # not yet implemented       
+    
+    # Summary:
+    summary(object, doplot = FALSE)       # use always doplot=FALSE
+    
+    # Get Values:
+    coefficients(object)
+    coef(object)
+    fitted(object)[51:60]                
+    residuals(object)[51:60]              
+    
+    # Predict:
+    # predict(object)                      # not yet implemented
+      
+    # Return Value:
+    return()    
+}
+
+
+# ------------------------------------------------------------------------------
+
+
+test.armaFormula =
+function()
+{
+    armaFit(~arma(2,1), armaSim(n = 10000))
+
+    URL = "http://www.itp.phys.ethz.ch/econophysics/R/data/organisations/YAHOO/data/MSFT.CSV"
+    download.file(URL, "MSFT.CSV")
+    TS = readSeries("MSFT.CSV")
+    print(TS)
+    
+    head(TS)
+    class(TS)
+    colnames(TS)
+    armaFit(formula = diff(log(Close)) ~ ar(5), data = TS)
+    armaFit(Close ~ ar(5), data = returnSeries(TS, digits = 12))
+    
+    TS.RET = returnSeries(TS, digits = 12)
+    head(TS.RET)
+    class(TS.RET)
+    armaFit(Close ~ ar(5), TS.RET)
+    armaFit(Close ~ ar(5), as.data.frame(TS.RET))
+    armaFit(~ ar(5), as.vector(TS.RET[, "Close"]))
+    armaFit(~ ar(5), as.ts(TS.RET)[, "Close"])
+    
+    # attach(TS.RET)
+    # armaFit(formula = Close ~ ar(5))
+
+    # Return Value:
+    return()    
+}
+
+    
+# ------------------------------------------------------------------------------
+
+
+test.armaArguments =
+function()
+{
+    # armaFit(
+    #   formula, data, method = c("mle", "ols"), include.mean = TRUE, 
+    #   fixed = NULL, title = NULL, description = NULL, ...) 
+
+    # arima(
+    #   x, order = c(0, 0, 0), seasonal = list(order = c(0, 0, 0), period = NA), 
+    #   xreg = NULL, include.mean = TRUE, transform.pars = TRUE, 
+    #   fixed = NULL, init = NULL, method = c("CSS-ML", "ML", "CSS"), 
+    #   n.cond, optim.control = list(), kappa = 1e+06) 
+
+    x = armaSim(model = list(ar = c(0.5, -0.5), d = 0, ma = 0.1), n = 1000)
+    
+    # Iclude Mean:
+    armaFit(~ arma(2, 1), data = x, include.mean = FALSE)
+    
+    # Fixed - AR(2[2]) Subset Model:
+    # arima(x, order = c(2,0,1), fixed = c(0.5, NA, NA, NA))
+    armaFit(~ arma(2, 1), data = x, fixed = c(0.5, NA, NA, NA))
+    
+    # Return Value:
+    return()    
+}
+
+
+# ------------------------------------------------------------------------------
+
+
+test.armaUtils = 
+function()
+{ 
+    # armaTrueacf: Returns True ARMA autocorrelation function
+    # armaRoots:   Returns Roots of the ARMA characteristic polynomial
+
+    # armaTrueacf(model, lag.max = 20, type = "correlation", doplot = TRUE)
+    model = list(ar = c(0.5, -0.5))
+    armaTrueacf(model, lag.max = 10)
+    
+    # armaRoots(coefficients, n.plot = 400, digits = 4, ...)
+    coefficients = c(-0.5, 0.9, -0.1, -0.5)
+    ans = armaRoots(coefficients)
+    target = round(sum(ans), 2)
+    checkSum = 4.58
+    checkEqualsNumeric(target, checkSum)
+    
+    # Return Value:
+    return()    
+}
+
+
+# ------------------------------------------------------------------------------
+
+
+if (FALSE) {
+    require(RUnit)
+    testResult <- runTestFile("C:/Rmetrics/SVN/trunk/fSeries/test/runit1A.R")
+    printTextProtocol(testResult)
+}
+   
+
+################################################################################
+    
