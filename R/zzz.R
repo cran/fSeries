@@ -1,13 +1,4 @@
 
-#*******************************************************************************
-# fSeries - A SOFTWARE COLLECTION FOR FINANCIAL ENGINEERS
-# The Dynamical Process Behind Financial Markets
-#
-# collected by Diethelm Wuertz
-# Version 0.9
-#*******************************************************************************
-
-
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Library General Public
 # License as published by the Free Software Foundation; either
@@ -44,16 +35,19 @@ function(lib, pkg)
 {   # A function implemented by Diethelm Wuertz
     
     # Package:
-    cat("\nRmetrics, (C) 1999-2006, Diethelm Wuertz, GPL")
+    cat("\nRmetrics, (C) 1999-2007, Diethelm Wuertz, GPL")
     cat("\nfSeries: The Dynamical Process Behind Financial Markets\n")
 
-    # Load dll:
+    # Load Libraries:
     sink("@sink@")
     library(mgcv) # gam
     library(nnet) # nnet
     sink()
     unlink("@sink@")
+    
+    # Load dll:
     library.dynam("fSeries", pkg, lib)
+
 }
 
 
