@@ -24,32 +24,54 @@
 #   see R's copyright and license files
 # for the code accessed (or partly included) from contributed R-ports
 # and other sources
-#   see Rmetrics's copyright file 
+#   see Rmetrics's copyright file
 
 
+################################################################################ 
+# FUNCTION:                 DESCRIPTION:
+#  model.frame.default       Allows to use model.frame for "timeSeries"
 ################################################################################
- 
-    
-.First.lib =  
-function(lib, pkg)
-{   
-    # Startup Mesage and Desription:
-    MSG <- if(getRversion() >= "2.5") packageStartupMessage else message
-    dsc <- packageDescription(pkg)
-    if(interactive() || getOption("verbose")) { 
-        # not in test scripts
-        MSG(sprintf("\nPackage %s (%s) loaded.\n%s\n",
-            pkg, dsc$Version, dsc$Title),
-            "Rmetrics, (C) 1999-2007, Diethelm Wuertz, GPL\n")
-    }
 
-    # Load dll:
-    # library.dynam("fSeries", pkg, lib) 
+
+model.frame.timeSeries = 
+function(formula, data, ...) 
+{   # A function implemented by Diethelm Wuertz
+
+    # Arguments:
+    #   formula - a model formula
+    #   data - a timeSeries object
+    
+    # Details:
+    #   Allows to use model.frame() for "timeSeries" objects.
+    
+    # Examples:
+    #   x = as.timeSeries(data(msft.dat))[1:12, ]
+    #   model.frame( ~ High + Low, data = x)
+    #   model.frame(Open ~ High + log(Low, base = `base`), data = x) 
+   
+    # FUNCTION:
+
+    # Create Model Frame:
+    Data = data
+    data = data.frame(data@Data) 
+    Model = stats::model.frame.default(formula, data, ...)
+    
+    # Convert to timeSeries:
+    ans = timeSeries(
+        data = as.matrix(Model), 
+        charvec = rownames(Data),
+        units = colnames(Model),
+        format = Data@format,
+        FinCenter = Data@FinCenter, 
+        recordIDs = Data@recordIDs, 
+        title = Data@title, 
+        documentation = .description()
+        )
+
+    # Return value:
+    ans   
 }
 
-if(!exists("Sys.setenv", mode = "function")) # pre R-2.5.0, use "old form"
-    Sys.setenv <- Sys.putenv
 
-    
 ################################################################################
 
