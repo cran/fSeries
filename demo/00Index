@@ -1,28 +1,12 @@
 funSeries                   fSeries Function Addon
 funUrca                     urca Function Addon
 
-xmpArmaModelling            ARMA Time Series Modelling
+xmpDWChapter31              ARMA Time Series Modelling
+xmpDWChapter32              Time Series with Trends: Unit Roots
+xmpDWChapter33              Longe-Range Dependent Time Series
+xmpDWChapter34        		GARCH Time Series Modelling 
+xmpDWChapter35              Nonlinear and Chaotic Time Series
+xmpDWChapter36              Time Series Filters
 
-xmpDataDEMGBP               Investigate the dem2gbp data set
-xmpGarchModelling           GARCH Time Series Modelling
-xmpAparchModelling          APARCH Time Series Innovations
-xmpGarchOxModelling         GARCH Ox Modelling 
-xmpGarchpqModelling         Simple Garch(p,q) Modelling
-
-xmpChaosMaps                Simulates Chaotic Time Series Maps
-
-xmpTestBDS                  BDS Time Series Test
-xmpTestCointegration        Cointegration Tests
-xmpTestNonlinearity         Nonlinearity Tests
-xmpTestNormality            Normality Tests
-xmpTestStationarity         Stationarity Tests
-
-xmpTestUnitRoots            Unit Root Tests
-
-xmpDistTestSkew             Unit Tests for Distributions
-
-xmpSeriesFilter             Time Series Filter
-
-xmpZWChapter03              Zivot-Wang Chapter 3 Time Series Concepts
-
-xmpEuStockMarkets           European Stock Market Data
+xmpTMChapter02              Mills Textbook Chapter 2
+xmpZWChapter03              Zivot and Wang Textbook Chapter 3

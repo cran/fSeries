@@ -1,7 +1,5 @@
-
-
 #
-# Example:
+# Examples:
 #   A Compendium for R and Rmetrics users to the book 
 #     "Modeling Financial Time Series with S-Plus" 
 #     written by E. Zivot and J. Wang
@@ -14,13 +12,12 @@
 #   This is not a COPY of the S-Plus "example.ssc" files accompanying the
 #     book of Zivot and Wang. It is worth to note that this file contents a 
 #     new implementation of the examples tailored to Rmetrics based on R.
-#   Diethelm Wuertz
-#     www.rmetrics.org
-#     www.itp.phys.ethz.ch
-#     www.finance.ch
 #
 # Author:
-#   (C) 2002-2004, Diethelm Wuertz, GPL
+#   (C) Rmetrics 1997-2005, Diethelm Wuertz, GPL
+# 	  www.rmetrics.org
+# 	  www.itp.phys.ethz.ch
+# 	  www.finance.ch
 #
 
 
