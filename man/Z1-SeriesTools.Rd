@@ -14,6 +14,7 @@
 
 	Popups the example menu and starts or continues the example 
 	and demo programs.
+	\cr
 	
 }
 
@@ -64,6 +65,8 @@ xmpSeries(prompt = "")
 
 
 \examples{
+## SOURCE("fBasics.A0-SPlusCompatibility")
+
 \dontrun{
 ## xmpfSeries -
    # Popup the examples menu:

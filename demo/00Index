@@ -1,37 +1,27 @@
 funSeries                   fSeries Function Addon
+funUrca                     urca Function Addon
 
-xmpEuStockMarkets           European Stock Market Data
+xmpArmaModelling            ARMA Time Series Modelling
 
-xmpArmaModelling            ARMA Time Series Modelling 
+xmpDataDEMGBP               Investigate the dem2gbp data set
 xmpGarchModelling           GARCH Time Series Modelling
 xmpAparchModelling          APARCH Time Series Innovations
+xmpGarchOx                  Garch Ox Modelling    
+
+xmpChaosMaps                Simulates Chaotic Time Series Maps
 
 xmpTestBDS                  BDS Time Series Test
 xmpTestCointegration        Cointegration Tests
 xmpTestNonlinearity         Nonlinearity Tests
 xmpTestNormality            Normality Tests
 xmpTestStationarity         Stationarity Tests
+
 xmpTestUnitRoots            Unit Root Tests
 
-xmpRegRecession             Modelling US Recession
-
-xmpEqnsGrunfeld             OLS and SUR Modelling of Grunfeld's Data
-
-xmpTradingIndicators        Implements More Trading Indicator Functions
-xmpTradingPatternCreation   Creates Trading Pattern
-xmpTradingPatternTests      Performs Windowed Correlation Tests
-xmpTradingModels            Trades with MACD and Trend Indicators
-
-xmpRollingAnalysis          Implements SMA and EWMA Functions
-
-xmpChaosMaps                Simulates Chaotic Time Series Maps
-xmpMatrixAddonNA            Manages Missing Values in Matrix Objects
-xmpMatrixSummary            Matrix Arithmetics and Linear Algebra
-
-xmpGarchOx                  Garch Ox Modelling    
 xmpDistTestSkew             Unit Tests for Distributions
-  
+
 xmpSeriesFilter             Time Series Filter
 
 xmpZWChapter03              Zivot-Wang Chapter 3 Time Series Concepts
-xmpZWChapter10              Zivot-Wang Chapter 10 Linear SUR Modelling
+
+xmpEuStockMarkets           European Stock Market Data

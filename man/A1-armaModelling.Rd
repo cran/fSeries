@@ -19,6 +19,8 @@
 
 \alias{armaRoots}
 \alias{armaTrueacf}
+\alias{armaToeplitz}
+\alias{armaFischer}
 
 
 \title{Integrated ARMA Time Series Modelling}
@@ -26,10 +28,12 @@
 
 \description{
 
-	A collection and description of simple to use functions to model 
-	univariate autoregressive moving average time series processes, 
-	including time series simulation, parameter estimation, diagnostic 
-	analysis of the fit, and predictions of future values.
+	A collection and description of simple to 
+	use functions to model univariate autoregressive 
+	moving average time series processes, including 
+	time series simulation, parameter estimation, 
+	diagnostic analysis of the fit, and predictions 
+	of future values.
 	\cr
 		
 	The functions are:
@@ -77,7 +81,9 @@
 		
 	\tabular{ll}{
 	\code{armaRoots} \tab Roots of the characteristic ARMA polynomial, \cr
-	\code{armaTrueacf} \tab True autocorrelation function of an ARMA process. }
+	\code{armaTrueacf} \tab True autocorrelation function of an ARMA process, \cr
+	\code{armaToeplitz} \tab True Toeplitz matrix of a vector, \cr
+	\code{armaFischer} \tab Fischer Information Matrix of an ARMA Process. }
  	
 }
 	
@@ -111,17 +117,20 @@ armaSim(model = list(ar = c(0.5, -0.5), d = 0, ma = 0.1), n = 100, innov =
 armaFit(formula = x ~ arima(2, 0, 1), 
 	method = c("CSS-ML", "ML", "CSS", "yw", "burg", "ols", "mle"), 
 	include.mean = TRUE, fixed = NULL, fracdiff.M = 100, fracdiff.h = -1, 
-	title = "", description = "", \dots)
+	title = NULL, description = NULL, \dots)
 
 \method{predict}{fARMA}(object, n.ahead = 10, n.back = 50, conf = c(80,95), 
 	doplot = TRUE, doprint = TRUE, \dots)
 	
 \method{print}{fARMA}(x, \dots)
-\method{plot}{fARMA}(x, gof.lag, reference.grid = TRUE, col = "steelblue4", \dots)
+\method{plot}{fARMA}(x, gof.lag = 10, reference.grid = TRUE, 
+	col = "steelblue4", \dots)
 \method{summary}{fARMA}(object, doplot = TRUE, \dots)
 
 armaRoots(coefficients, n.plot = 400, digits = 4, \dots) 
 armaTrueacf(model, lag.max = 20, type = "correlation", doplot = TRUE) 
+armaToeplitz(x)
+armaFischer(model = list(ar = c(0.5, -0.5), ma = 0.1))
 }
 
 
@@ -138,10 +147,9 @@ armaTrueacf(model, lag.max = 20, type = "correlation", doplot = TRUE)
 		\code{"steelblue4"}; and a logical flag, by default \code{TRUE},
 		to draw a reference grid on the plot or not.
 		} 
-	\item{description, title}{
-		two character strings, assigning a title and a brief description
-		to an \code{"fARMA"} object.
-		}
+	\item{description}{
+        a character string which allows for a brief description.
+        }
 	\item{digits}{	
 		[armaRoots] - \cr
 		output precision, an integer value.
@@ -258,7 +266,7 @@ armaTrueacf(model, lag.max = 20, type = "correlation", doplot = TRUE)
 		coefficients \code{ar=c(0.5, -0.5)} and \code{ma=0.1} will be 
 		generated.
 		\cr
-		[armaTrueacf] - \cr
+		[armaTrueacf][armaFischer] - \cr
 		a specification of the ARMA model with two elements:
 		\code{model$ar} is the vector of the AR coefficients, and 
 		\code{model$ma} is the vector of the MA coefficients.
@@ -308,7 +316,10 @@ armaTrueacf(model, lag.max = 20, type = "correlation", doplot = TRUE)
 	    is a univariate time series or vector of innovations to be used 
 	    as start up values. Missing values are not allowed.
 	    }
-	\item{type}{
+	\item{title}{
+        a character string which allows for a project title.
+        }
+    \item{type}{
 		[armaTrueacf] - \cr
 		a character string, "correlation" to compute the true 
 		autocorrelation function, "partial" to compute the true
@@ -322,7 +333,10 @@ armaTrueacf(model, lag.max = 20, type = "correlation", doplot = TRUE)
 	    fitting function \code{armaFit} and serves as input for the 
 	    \code{predict}, \code{print}, \code{print.summary},
 	    and \code{plot} methods. Some methods allow for additional 
-	    arguments.
+	    arguments. \cr
+	    [armaToeplitz] - \cr
+		a vector of autocovariances. The returned Toeplitz matrix is  
+    	the corresponding covariance matrix of the observatons.
 	    }
 	\item{\dots}{
 	    additional arguments to be passed.
@@ -374,6 +388,19 @@ armaTrueacf(model, lag.max = 20, type = "correlation", doplot = TRUE)
 	\cr
 	returns a two column data frame with the lag and the correlation 
 	function. 
+	
+	\code{armaToeplitz}
+	\cr
+	returns the Toeplitz matrix of a given vector \code{x}. The 
+	Toeplitz matrix is a square matrix of order length(x) and with 
+	\code{[i,j]} entries given by \code{x[abs(i-j)]}. Note, if 
+	\code{x} is a vector of autocovariances, the Toeplitz matrix is  
+    the corresponding covariance matrix of the observatons.
+    
+    \code{armaFischer}
+    \cr
+    returns the Fischer information matrix for an ARMA time series
+    process.
 
 }
     	    	
@@ -579,10 +606,10 @@ Haslett J. and Raftery A.E. (1989);
 
 \seealso{
 
-	\code{\link{GarchModelling}}, 
-	\code{\link{EquationsModelling}},
-	\code{\link{RandomInnovations}},
-  	\code{\link{RegressionModelling}}.
+	\code{GarchModelling}, 
+	\code{EquationsModelling},
+	\code{RandomInnovations},
+  	\code{RegressionModelling}.
   	
 }
 

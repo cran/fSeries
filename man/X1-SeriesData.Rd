@@ -4,11 +4,12 @@
 
 \alias{nyseres}
 \alias{recession}
-\alias{spc1970}
-\alias{spcindis}
 
 \alias{dem2gbp}
 \alias{cac40}
+\alias{sp500dge}
+
+\alias{ibmbj}
 
 \alias{nelsonplosser}
 \alias{surex1.ts}
@@ -24,23 +25,24 @@
 
 \description{
 
-    A collection and description of data sets including recession
-    data from the US, indicators for daily SP500 stock data
-    together with an set of trading indicators for technical
-    analysis, daily observations of the Deutschmark / British
-    Pound foreign exchange log returns and CAC40 index returns
-    with realized volatility both used in Garch benchmark
-    measurements, the fourteen US economic time series
-    used by Nelson and Plosser in their seminal paper,
-    several public data sets used in the book ``Modelling
-    financial time series with S-Plus'' written by Zivot and
-    Wang, data for Klein's simple econometric model
-    of the US economy, and data from Kmenta constructed to
-    illustrate estimation of a simultaneous-equation
-    models
+    A collection and description of data sets 
+    including recession data from the US, indicators 
+    for daily SP500 stock data together with an set 
+    of trading indicators for technical analysis, 
+    daily observations of the Deutschmark / British
+    Pound foreign exchange log returns and CAC40 index 
+    returns with realized volatility both used in Garch 
+    benchmark measurements, the fourteen US economic 
+    time series used by Nelson and Plosser in their 
+    seminal paper, several public data sets used in 
+    the book 'Modelling financial time series with S-Plus' 
+    written by E. Zivot and J. Wang, data for Klein's 
+    simple econometric model of the US economy, and 
+    data from Kmenta constructed to illustrate estimation 
+    of a simultaneous-equation models.
 	\cr
 
-  
+	
   	\code{recession}
   	\cr
   	Data sets used in the regression analysis.
@@ -50,12 +52,6 @@
   	Stock-Watson experimental recession index.
   	\cr	
   	
-  	\code{spc1970} and 
-  	\code{spcindis}
-  	\cr
-  	These data are indicators for daily SP500 Stock Data together
-  	with an set of trading indicators for technical analysis.
-  	\cr
   	
   	\code{dem2gbp}
   	\cr
@@ -74,16 +70,39 @@
 	rates.
 	\cr
 	
+	
 	\code{cac40}
 	\cr
 	Daily CAC40 index returns with realized volatility. The data 
+	cover the period January 4, 1928 until August 31, 1991. The
+	first colum hold the ISO-8601 formatted dated, and the second 
+	the index values. The data were used in the paper of Ding,
+	Granger and Engle [1993] introducing the APARCH model. It can 
+	be consider as a benchmark data set.
+	\cr
+	
+	
+	\code{sp500dge}
+	\cr
+	Daily SP500 index values. The data 
 	cover the period January 1995 until December 1999, and have 1249 
 	observations. The first column of the file \code{CAC40} lists 
 	the averaged return of the Index, and the second column 
 	\code{CAC40VOL} lists the realized volatility. The data are
 	used as a benchmark for GARCH modeling by Laurent and Peters
-	(2002).
+	(2002).\cr
+	\code{"\%Y-\%m-\%d"} - ISO-8601 Dates, \cr 
+	\code{"SP500"} - SP500 Index Value.
 	\cr
+		
+	
+	\code{ibmbj}
+	\cr
+	The daily stock market price seriesB from Box and Jenkins [1976].
+	A numeric vector of closing prices on 369 consecutive trading days 
+	starting May 19, 1961.
+	\cr
+	
 	
 	\code{nelsonplosser}
 	\cr
@@ -91,25 +110,26 @@
 	used by Nelson and Plosser in their seminal paper. The time 
 	series are: \cr
 	\code{"\%Y\%m\%d"} - Date index from 18601231 until 19701231, \cr 
-	\code{"gnp.r"} - Real GNP, [Billions of 1958 Dollars], [1909 – 1970], \cr 
+	\code{"gnp.r"} - Real GNP, [Billions of 1958 Dollars], [1909 - 1970], \cr 
 	\code{"gnp.n"} - Nominal GNP, [Millions of Current Dollars], 
-		[1909 – 1970], \cr 
-	\code{"gnp.pc"} - Real Per Capita GNP, [1958 Dollars], [1909 – 1970], \cr  
-	\code{"ip"} - Industrial Production Index, [1967 = 100], [1860 – 1970], \cr  
-	\code{"emp"} - Total Employment, [Thousands], [1890 – 1970], \cr  
-	\code{"ur"} - Total Unemployment Rate, [Percent], [1890 – 1970], \cr  
-	\code{"gnp.p"} - GNP Deflator, [1958 = 100], [1889 – 1970], \cr  
-	\code{"cpi"} - Consumer Price Index, [1967 = 100], [1860 – 1970], \cr  
-	\code{"wg.n"} - Nominal Wages, [current Dollars], [1900 – 1970], \cr  
-	\code{"wg.r"} - Real Wages, [Nominal wages/CPI], [1900 – 1970], \cr  
+		[1909 - 1970], \cr 
+	\code{"gnp.pc"} - Real Per Capita GNP, [1958 Dollars], [1909 - 1970], \cr  
+	\code{"ip"} - Industrial Production Index, [1967 = 100], [1860 - 1970], \cr  
+	\code{"emp"} - Total Employment, [Thousands], [1890 - 1970], \cr  
+	\code{"ur"} - Total Unemployment Rate, [Percent], [1890 - 1970], \cr  
+	\code{"gnp.p"} - GNP Deflator, [1958 = 100], [1889 - 1970], \cr  
+	\code{"cpi"} - Consumer Price Index, [1967 = 100], [1860 - 1970], \cr  
+	\code{"wg.n"} - Nominal Wages, [current Dollars], [1900 - 1970], \cr  
+	\code{"wg.r"} - Real Wages, [Nominal wages/CPI], [1900 - 1970], \cr  
 	\code{"M"} - Money Stock (M2), [Billions of Dollars, annual averages], 
-		[1889 – 1970], \cr  
-	\code{"vel"} - Velocity of Money, [1869 – 1970], \cr  
+		[1889 - 1970], \cr  
+	\code{"vel"} - Velocity of Money, [1869 - 1970], \cr  
 	\code{"bnd"} - Basic Bond Yields of 30-year Corporate Bonds, 
-		[Percent per annum], [1900 – 1970], \cr 
-	\code{"sp"} - Stock Prices, [Index; 1941 – 43 = 100], [1871 – 1970].
+		[Percent per annum], [1900 - 1970], \cr 
+	\code{"sp"} - Stock Prices, [Index; 1941 - 43 = 100], [1871 - 1970].
 	\cr
 		
+	
 	\code{surex1.ts}
 	\cr
  	This file contains monthly sampled exchange rate spot returns and 
@@ -129,6 +149,7 @@
 	\code{"USUK.FP.lag1"} one month forward premium between USD and GBP, \cr 
 	\code{"USUKS.diff"} future returns on spot rate between USD and GBP.
 	\cr
+	
 	
 	\code{rf.30day}
 	\cr
@@ -151,7 +172,7 @@
 	\code{"DELTA"} real monthly returns of Delta Airlines. \cr
 	\code{"GENMIL"} real monthly returns of General Mills. \cr
 	\code{"GERBER"} real monthly returns of Gerber. \cr
-	\code{"IBM"} real monthly returns of International Business Machines. 
+	\code{"IBM"} real monthly returns of International Business Machines. \cr
 	\code{"MARKET"} real value-weighted composite monthly returns. \cr
 	\code{"MOBIL"} real monthly returns of Mobile. \cr
 	\code{"PANAM"} real monthly returns of Pan American Airways. \cr 
@@ -168,7 +189,7 @@
 	of the US economy. The Klein data frame has 22 rows and 10 columns:
 	Column \cr
 	This data frame contains the following columns: 
-	\code{year} years 1921–1941, represented in the POSIX data format 
+	\code{year} years 1921-1941, represented in the POSIX data format 
 		\%Y-\%m-\%d,  \cr
 	\code{c} the consumption, \cr 
 	\code{p} the private profits, \cr
@@ -186,8 +207,9 @@
 	\cr
  	This file contains partly contrived data from Kmenta (1986), 
  	constructed to illustrate estimation of a simultaneous-equation 
- 	model. The data set has 20 rows and 5 columns: 
- 	Column \cr
+ 	model. The data set has 20 rows and 6 columns, where the first
+ 	holds the ISO-8601 formatted date as "\%Y-\%m-\%d": 
+ 	The remaining columns are: \cr
  	\code{q} food consumption per capita, \cr
 	\code{p} ratio of food prices to general consumer prices, \cr
 	\code{d} disposable income in constant dollars, \cr
@@ -214,11 +236,20 @@
 Berndt E.R. (1991);
 	\emph{The Practice of Econometrics: Classic and Contemporary},
 	Addison-Wesley Publishing Co. 
+	
+Box G.E.P., Jenkins J.M. (1976);
+	\emph{Time Series Analysis: Forecasting and Control},
+	Holden Day, San Francisco.
 
-Brooks C., Burke S.P, Persand G. (2001);
+Brooks C., Burke S.P., Persand G. (2001);
 	\emph{Benchmarks and the Accuracy of GARCH Model Estimation},
 	International Journal of Forecasting 17, 45--56.
 
+Ding Z., Granger C.W.J., Engle R.F. (1993);
+	\emph{A Long Memory Property of Stock Market Returns And a New
+	Model},
+	Journal of Empirical Finance 1, 83--106.
+	
 McCullough B.D., Renfro C.G. (1998);
 	\emph{Benchmarks and Software Standards: A Case Study of GARCH 
 	Procedures},
@@ -229,7 +260,7 @@ Greene W.H. (1993);
 	Second Edition, Macmillan. 
 
 Klein, L. (1950);
-	 \emph{Economic Fluctuations in the United States 1921–1941},
+	 \emph{Economic Fluctuations in the United States 1921--1941},
 	 Wiley. 
 
 Kmenta J. (1997); 
@@ -243,7 +274,7 @@ Laurent S., Peters J.P. (2002);
 	
 Nelson C.R., Plosser C.I. (1982); 
 	\emph{Trends and Random Walks in Macroeconomic Time Series},
-	Journal of Monetary Economics, 10, 139–-162. 
+	Journal of Monetary Economics, 10, 139--162. 
 
 Zivot E. (2000);
 	\emph{Cointegration and forward and spot exchange rate regressions},
@@ -253,6 +284,8 @@ Zivot E. (2000);
 
 
 \examples{
+## SOURCE("fBasics.A0-SPlusCompatibility")
+
 ## NYSE Residuals:
    data(nyseres)
    ts.plot(nyseres, xlab = "Index", ylab = "log-Returns",

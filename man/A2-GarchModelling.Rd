@@ -5,6 +5,9 @@
 \alias{fGARCH}
 \alias{fAPARCH}
 
+\alias{fGARCH-class}
+\alias{fAPARCH-class}
+
 \alias{garchSim}
 \alias{garchFit}
 \alias{aparchSim}
@@ -32,10 +35,12 @@
 
 \description{
 
-    A collection and description of functions to simulate artificial 
-    ARCH time series processes, to fit the parameters of univariate 
-    time series to ARCH models, to perform a diagnostic analysis of 
-    the fit, and to predict future values of the time series.
+    A collection and description of functions to 
+    simulate artificial ARCH time series processes, 
+    to fit the parameters of univariate time series 
+    to ARCH models, to perform a diagnostic analysis of 
+    the fit, and to predict future values of the time 
+    series.
     \cr
     
     The family of GARCH time series models includes the following 

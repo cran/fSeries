@@ -58,7 +58,7 @@ function(x, ...)
 }
 
 
-# ------------------------------------------------------------------------------
+# ******************************************************************************
 
 
 garchSim = 
@@ -105,21 +105,26 @@ n = 100, innov = NULL, n.start = 100, start.innov = NULL, rand.gen = rnorm,
     
     # FUNCTION:
     
+    # Doesn't, replace the three following three lines ...
     # If Missing from Model List - Add to List:
-    if (!exists("model$alpha")) model$alpha = 0
-    if (!exists("model$beta")) model$beta = 0
-    if (!exists("model$mu")) model$mu = 0
+    # if (!exists("model$alpha")) model$alpha = 0
+    # if (!exists("model$beta")) model$beta = 0
+    # if (!exists("model$mu")) model$mu = 0
+    
+    # with ...
+    if (is.null(model$alpha)) model$alpha = 0
+    if (is.null(model$beta)) model$beta = 0
+    if (is.null(model$mu)) model$mu = 0
     
     # Innovations:
     max.order = max(length(model$alpha), length(model$beta))
     if (n.start < max.order)
-        stopt("n.start must be greater or equal max(alpha,beta)")   
+        stop("n.start must be greater or equal max(alpha,beta)")   
     if (is.null(start.innov)) start.innov = rand.gen(n.start, ...)  
     if (is.null(innov)) innov = rand.gen(n, ...)
     
     # Setting Start Values and Vectors:
-    h = x = z = c(start.innov, innov)
-    deltainv = 1/model$delta    
+    h = x = z = c(start.innov, innov)  
         
     # Initialization:
     for (i in 1:max.order) {
@@ -167,28 +172,32 @@ function (x, order = c(1, 1), ...)
     BIgarch = function (x, order = c(1, 1), coef = NULL, itmax = 200, 
     eps = NULL, grad = c("analytical", "numerical"), series = NULL, 
     trace = TRUE, ...) {
-        if(NCOL(x) > 1) stop("x is not a vector or univariate time series")
-        if(!is.vector(order)) stop("order is not a vector")
+        if (NCOL(x) > 1) stop("x is not a vector or univariate time series")
+        if (!is.vector(order)) stop("order is not a vector")
         grad = match.arg(grad)
         switch(grad,
             analytical = (agrad = TRUE),
             numerical = (agrad = FALSE))
-        if(is.null(series)) series = deparse(substitute(x))
+        if (is.null(series)) series = deparse(substitute(x))
         ists = is.ts(x)
         x = as.ts(x)
         xfreq = frequency(x)
-        if(any(is.na(x))) stop("NAs in x")
-        if(ists) xtsp = tsp(x)
+        if (any(is.na(x))) stop("NAs in x")
+        if (ists) xtsp = tsp(x)
         x = as.matrix(x)
         n = nrow(x)
         e = double(n)
         ncoef = order[1]+order[2]+1
         hess = matrix(0.0, ncoef, ncoef)
         small = 0.05
-        if(is.null(coef)) coef = c(var(x)*(1.0-small*(ncoef-1)),rep(small,ncoef-1))
-        if(!is.vector(coef)) stop("coef is not a vector")
-        if(ncoef != length(coef)) stop("incorrect length of coef")
-        if(is.null(eps)) eps = .Machine$double.eps
+        if (is.null(coef)) 
+            coef = c(var(x)*(1.0-small*(ncoef-1)),rep(small,ncoef-1))
+        if (!is.vector(coef)) 
+            stop("coef is not a vector")
+        if (ncoef != length(coef)) 
+            stop("incorrect length of coef")
+        if (is.null(eps)) 
+            eps = .Machine$double.eps
         nlikeli = 1.0e+10
         fit = .C("fit_garch", as.vector(x, mode = "double"),
             as.integer(n), coef = as.vector(coef, mode = "double"),
@@ -204,25 +213,27 @@ function (x, order = c(1, 1), ...)
             hess = as.matrix(hess), as.integer(order[1]),
             as.integer(order[2]), PACKAGE="fSeries")
         rank = qr(com.hess$hess, ...)$rank
-        if(rank != ncoef) {
+        if (rank != ncoef) {
             se.garch = rep(NA, ncoef)
-            cat("Warning: singular information\n") }
-        else
+            cat("Warning: singular information\n") 
+        } else {
             se.garch = sqrt(diag(solve(com.hess$hess)))
+        }
         sigt = sqrt(pred$e)
         sigt[1:max(order[1],order[2])] = rep(NA, max(order[1],order[2]))
         f = cbind(sigt,-sigt)
         colnames(f) = c("sigt","-sigt")
         e = as.vector(x)/sigt  
-        if(ists) {
+        if (ists) {
             attr(e, "tsp") =  attr(f, "tsp") = xtsp
-            attr(e, "class") = attr(f, "class") = "ts" }
-        names(order) = c("p","q")
+            attr(e, "class") = attr(f, "class") = "ts" 
+        }
+        names(order) = c("p", "q")
         coef = fit$coef
         nam.coef = "a0"
-        if(order[2] > 0)
+        if (order[2] > 0)
             nam.coef = c(nam.coef, paste("a", seq(order[2]), sep = ""))
-        if(order[1] > 0)
+        if (order[1] > 0)
             nam.coef = c(nam.coef, paste("b", seq(order[1]), sep = ""))
         names(coef) = nam.coef
         names(se.garch) = nam.coef
@@ -231,7 +242,8 @@ function (x, order = c(1, 1), ...)
         garch = list(order = order, coef = coef, n.likeli = fit$nlikeli,
             n.used = n, residuals = e, fitted.values = f, series = series, 
             frequency = xfreq, call = match.call(), asy.se.coef = se.garch)
-        return(garch) }
+        return(garch) 
+    }
     
     # Call:
     call = match.call()
@@ -239,13 +251,14 @@ function (x, order = c(1, 1), ...)
     # Fit:
     sink("@sink@")
     fit = BIgarch(x = x, order = order, ...)
-    sink(); unlink("@sink@")
+    sink()
+    unlink("@sink@")
     
     # Add to result:
     names(fit$coef)[1] = "omega"
     fit$call = call
     fit$model = paste("GARCH(", 
-        as.character(order[1]), ",", as.character(order[2]), ")", sep="")
+        as.character(order[1]), ",", as.character(order[2]), ")", sep = "")
     fit$order = order
     fit$x = x
     fit$se.coef = fit$asy.se.coef
@@ -507,8 +520,8 @@ n.start = 100, start.innov = NULL, rand.gen = rnorm, ...)
     # FUNCTION: 
     
     # Innovations:      
-    if(is.null(innov)) innov = rand.gen(n, ...)
-    if(is.null(start.innov)) start.innov = rand.gen(n.start, ...)   
+    if (is.null(innov)) innov = rand.gen(n, ...)
+    if (is.null(start.innov)) start.innov = rand.gen(n.start, ...)   
     
     # subroutine aparchsim( z, x, h, nt,
     #  &   omega, alpha, gamma, lagsa, na, beta, lagsb, nb, delta)
@@ -794,5 +807,6 @@ function(x, ...)
 #}
 
 
-# ------------------------------------------------------------------------------
+################################################################################
+
 

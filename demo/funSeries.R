@@ -599,9 +599,9 @@ function(object, digits = max(3, getOption("digits") - 3), ...)
         for (i in 1:object$garch.orders[2])
         coef.names = c(coef.names, paste("GARCH(", as.character(i), ")", 
             sep=""))}            
-    if(object$cond.dist == "t") coef.names = c(coef.names, "Student(DF)")
-    if(object$cond.dist == "ged") coef.names = c(coef.names, "GED(DF)")
-    if(object$cond.dist == "skewed-t") {
+    if (object$cond.dist == "t") coef.names = c(coef.names, "Student(DF)")
+    if (object$cond.dist == "ged") coef.names = c(coef.names, "GED(DF)")
+    if (object$cond.dist == "skewed-t") {
         coef.names = c(coef.names, "Asymmetry", "Tail")  }
     if (object$arch.in.mean == 1) {
         coef.names = c(coef.names, "ARCH-in-mean(var)") }   

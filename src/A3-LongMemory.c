@@ -8,20 +8,23 @@
 #include <time.h>
 
 
-/*Function to simulate a FGN  sequence, using the Durbin-Levinson 
-coefficients, and working in conjunction with Sdurbin.FGN.S, an S-Plus 
-routine.  */
+/* 
+   Function to simulate a FGN  sequence, using the Durbin-Levinson 
+   coefficients.  
+*/
 
 void durbinFGN(n,h,sigma,normal,output)
 
 long *n;
 double *h, *sigma, *normal, *output;
 
-/* n  -- length of desired sequence.
+/* 
+   n  -- length of desired sequence.
    d  -- coefficient
    sigma -- standard deviation of the innovations. 
    normal  -- the sequence of innovations.
-   output -- the sequence being output.*/
+   output -- the sequence being output.
+*/
 
 {
   long i,j;
@@ -32,17 +35,24 @@ double *h, *sigma, *normal, *output;
   phi2  = (double *) S_alloc(*n+1,sizeof(double)); 
   
   
-/*    All the vectors necessary are allocated dynamically.*/
+/* 
+	All the vectors necessary are allocated dynamically.
+*/
 
   sigma2 = *sigma * (*sigma)/2;
 
-/*determining the autocovariance function for this particular h.*/
+/*
+	determining the autocovariance function for this particular h.
+*/
 
   for (i = 0 ; i <= *n; i++)
     acov[i] = sigma2*(pow((double)(i+1),2*(*h)) - 2*pow((double)i,2*(*h)) + 
 		      pow((double)abs(i-1),2*(*h)));
 
-/* Determining the Durbin-Levinson coefficients and the output vector, recursively*/
+/* 
+	Determining the Durbin-Levinson coefficients and the output vector, 
+	recursively.
+*/
 
   phi1[1] = acov[1]/acov[0];
   phi2[1] = phi1[1];
@@ -84,9 +94,14 @@ double *h, *sigma, *normal, *output;
 /* #include <stdlib.h> */
 
 
-/* Written by Vadim Teverovsky */
+/* 
+	Written by Vadim Teverovsky 
+*/
 
-/* S feeds this function a time series (data) of length n. */
+
+/* 
+	S feeds this function a time series (data) of length n. 
+*/
 
 void
 Cfractal2(data, n, nvar, v)
@@ -133,9 +148,15 @@ double *v;
 /* #include <stdlib.h> */
 
 
-/* Written by Vadim Teverovsky */
+/* 
+	Written by Vadim Teverovsky. 
+*/
 
-/* S feeds this function a time series (data) of length n. */
+
+/* 
+	S feeds this function a time series (data) of length n. 
+	
+*/
 
 
 void
@@ -390,7 +411,7 @@ long *n, *nvar, *minpts;
       var[j] = lsfit3(data, j-1, m, residual);
 /*      v[i] += var[j]/npoints; */
     }
-    median3(var,npoints);
+    median3(var, npoints);
 /*    if (npoints < 100) {*/
 /*      for ( j = 1; j <= npoints; j++){*/
 /*	printf("var[%d] = %f \n", j, var[j]);}*/
@@ -453,15 +474,15 @@ double *x;
       a = aa;
     } else {
       if ( n % 2 == 0) {
-	xmed = 0.5*(np == nm ? xp+xm : np > nm ? a+xp : xm + a);
+		xmed = 0.5*(np == nm ? xp+xm : np > nm ? a+xp : xm + a);
       } else {
- 	xmed = np == nm ? a : np > nm ? xp : xm;
+ 		xmed = np == nm ? a : np > nm ? xp : xm;
       }
       return;
     }
     if ( (((ap-am)/am <= .01) && ((ap-am)/ap <=.01)) || (i >=90)) {
       xmed = (ap+am)/2;
-     printf("n = %d, ap = %f, am = %f, i = %d\n", n, ap, am, i);
+     /* printf("n = %d, ap = %f, am = %f, i = %d\n", n, ap, am, i); */
       return;
     }
     
@@ -582,9 +603,9 @@ long *n, *nvar, *minpts;
     for ( j = 1; j <= npoints; j++){
       var[j] = lsfit4(data, j-1, m, residual);
       v[i] += var[j]/npoints; 
-      if (i > 37 ){
+/*      if (i > 37 ){  */
 /*      printf("var[%d] = %f, npoints = %d, m = %d v[%d]= %f\n",j,var[j],npoints, m,i,v[i]);}*/
-    }
+/*    } */
 /*    median4(var,npoints,xmed);*/
 /*    if (npoints < 100) {*/
 /*      for ( j = 1; j <= npoints; j++){*/
@@ -593,6 +614,7 @@ long *n, *nvar, *minpts;
 /*    printf("m = %d, npoints = %d v[%d] = %f\n", m,npoints,i,v[i]);*/
 
   }
+  
 /* deallocate space pointed to by var */
 
   free(var);
@@ -657,7 +679,8 @@ double x[], *xmed;
     }
     if ( (((ap-am)/am <= .01) && ((ap-am)/ap <=.01)) || (i >=30)) {
       *xmed = (ap+am)/2;
-      printf("n = %d, ap = %f, am = %f, i = %d\n", n, ap, am, i);
+
+      /* printf("n = %d, ap = %f, am = %f, i = %d\n", n, ap, am, i); */
       return;
     }
     
@@ -851,8 +874,7 @@ Crs (data, n, nblk, nlag, overlap, output)
 	{
 	  output[NBLK * NLAG + k * NBLK + 0] = output[k * NBLK + 0] ;  /* radj (k, 0) = r (k, 0); */
 #if defined (DEBUG)
-	  printf("s[%d][1] = 0 radj(%d, 1) set equal to r(%d, 1)\n",
-		 k+1, k+1, k+1);
+	  printf("s[%d][1] = 0 radj(%d, 1) set equal to r(%d, 1)\n", k+1, k+1, k+1);
 #endif
 	}
 
@@ -883,8 +905,7 @@ Crs (data, n, nblk, nlag, overlap, output)
 	    {
 		output[NBLK * NLAG + k * NBLK + i] = output[k * NBLK + i]; /* radj (k, i) = r (k, i); */
 #if defined (DEBUG)
-	      printf("s[%d][%d] = 0 radj(%d, %d) set equal to r(%d, %d)\n",
-		     k+1, i+1, k+1, i+1, k+1, i+1);
+	      printf("s[%d][%d] = 0 radj(%d, %d) set equal to r(%d, %d)\n", k+1, i+1, k+1, i+1, k+1, i+1);
 #endif
 	    }
 	}

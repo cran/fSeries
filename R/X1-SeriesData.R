@@ -28,10 +28,16 @@
 
 
 ################################################################################
-# DATASET:		 		DESCRIPTION:
-#  nyseres.csv			 Daily Returns of NYSE Composite Index
-#  recession.csv		 US Recession Data
-#  spc1970.csv			 Daily SP500 Index, Open-High-Low-Close
-#  spcindis.csv			 Indicators of Daily SP500 Index
+# DATASET:
+#  nyseres
+#  recession
+#  dem2gbp
+#  cac40
+#  nelsonplosser
+#  surex1.ts
+#  rf.30day
+#  black.ts
+#  klein
+#  kmenta
 ################################################################################
 

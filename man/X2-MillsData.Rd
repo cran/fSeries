@@ -29,8 +29,10 @@
 
 \description{
 
-	A collection and description of data sets from the book "The Econometric 
-	Modelling of Financial Time Series" written by Terence C. Mills.
+	A collection and description of data sets 
+	from the book 'The Econometric Modelling of 
+	Financial Time Series" written by Terence C. 
+	Mills.
 	\cr
 	
 	The data sets are:
@@ -186,6 +188,8 @@ Mills, T.C. (1999);
 
 
 \examples{
+## SOURCE("fBasics.A0-SPlusCompatibility")
+
 ## RS.txt - 
    data(RS)
    plot(as.ts(RS))
