@@ -29,6 +29,7 @@
 
 ################################################################################
 # FUNCTION:                 GARCH TIME SERIES MODELLING:
+#  fGARCH                    S3 UseMethod Definition
 #  garchSim                  Simulates a GARCH Time Series Process
 #  garchFit                  Fits Model Parameters for a GARCH Process
 # METHODS:                  DESCRIPTION:

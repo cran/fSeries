@@ -12,7 +12,7 @@
 \description{
 
 	A collection and description of functions to 
-	to fit the parameters of an univariate time 
+	fit the parameters of an univariate time 
 	series to GARCH models interfacing the GARCH
 	OX Package. 
 	\cr
@@ -32,7 +32,7 @@
 garchOxFit(formula.mean = ~ arma(0, 0), formula.var = ~ garch(1, 1), 
 	series = x, cond.dist = c("gaussian", "t", "ged", "skewed-t"), 
 	include.mean = TRUE, truncation = 100, trace = TRUE, title = NULL,
-	description = NULL))
+	description = NULL)
 	
 \method{print}{garchOx}(x, digits, \dots)
 \method{summary}{garchOx}(object, \dots)
@@ -98,9 +98,9 @@ garchOxFit(formula.mean = ~ arma(0, 0), formula.var = ~ garch(1, 1),
 
 	\bold{Ox Interface:}
 	\cr	
-	the function \code{garchOxFit} interfaces a subset of the functionality 
-	of the G@ARCH 3.0 Package written in Ox. 
-	G@RCH 3.0 is one of the most sophisticated packages for modelling 
+	The function \code{garchOxFit} interfaces a subset of the functionality 
+	of the G@ARCH 4.0 Package written in Ox. 
+	G@RCH 4.0 is one of the most sophisticated packages for modelling 
 	univariate GARCH processes including GARCH, EGARCH, GJR, APARCH, 
 	IGARCH, FIGARCH, FIEGARCH, FIAPARCH and HYGARCH models. Parameters
 	can be estimated by approximate (Quasi-) maximum likelihood methods
@@ -120,11 +120,17 @@ garchOxFit(formula.mean = ~ arma(0, 0), formula.var = ~ garch(1, 1),
 	available for them through an R-Interface. What you have to do, is 
 	to check the "Ox citation and copyright" rules and if you agree and 
 	fullfill the conditions, then download the OxConsole Software 
-	together with the "OxGarch" Package, currently G@RCH 3.0. If you are 
+	together with the "OxGarch" Package, currently G@RCH 4.0. If you are 
 	not qualified for a free license, order your copy from Timberlake 
 	Consultants. We recommend to install the "Setup.exe" under the path 
 	"C:\\Ox\\" and to unzip the OxGarch Package in the directory 
-	"C:\\Ox\\Packages".
+	"C:\\Ox\\Packages". 
+	\cr
+	
+	\bold{Installation of the Interface:}
+	In addition you have to copy the file "GarchOxModelling.ox" from 
+	the "fSeries/data/" directory to the Ox library directory 
+	"C:\\Ox\\lib".
 	\cr
 	
 	\bold{Ox Citation and Copyright Rules:}

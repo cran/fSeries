@@ -6,7 +6,8 @@ xmpArmaModelling            ARMA Time Series Modelling
 xmpDataDEMGBP               Investigate the dem2gbp data set
 xmpGarchModelling           GARCH Time Series Modelling
 xmpAparchModelling          APARCH Time Series Innovations
-xmpGarchOx                  Garch Ox Modelling    
+xmpGarchOxModelling         GARCH Ox Modelling 
+xmpGarchpqModelling         Simple Garch(p,q) Modelling
 
 xmpChaosMaps                Simulates Chaotic Time Series Maps
 

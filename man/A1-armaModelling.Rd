@@ -111,8 +111,9 @@
 
 
 \usage{
-armaSim(model = list(ar = c(0.5, -0.5), d = 0, ma = 0.1), n = 100, innov = 
-	NULL, n.start = 100, start.innov = NULL, rand.gen = rnorm, \dots) 
+armaSim(model = list(ar = c(0.5, -0.5), d = 0, ma = 0.1), n = 100, 
+	innov = NULL, n.start = 100, start.innov = NULL, rand.gen = rnorm, 
+	rseed = NULL, \dots) 
 
 armaFit(formula = x ~ arima(2, 0, 1), 
 	method = c("CSS-ML", "ML", "CSS", "yw", "burg", "ols", "mle"), 
@@ -310,6 +311,12 @@ armaFischer(model = list(ar = c(0.5, -0.5), ma = 0.1))
 	    \code{rand.gen}, usually the location, scale and/or shape 
 	    parameter of the underlying distribution function, have to be 
 	    passed through the \code{dots} argument.
+	    }
+	\item{rseed}{
+   		[armaSim] - \cr
+	    the random number seed, by default NULL. If this argument is
+	    set to an integervalue, then the function \code{set.seed(rseed)}
+	    will be called.
 	    }
 	\item{start.innov}{
 		[armaSim] - \cr

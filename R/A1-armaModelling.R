@@ -93,7 +93,8 @@ setClass("fARMA",
 
 armaSim = 
 function(model = list(ar = c(0.5, -0.5), d = 0, ma = 0.1), n = 100,
-innov = NULL, n.start = 100, start.innov = NULL, rand.gen = rnorm, ...) 
+innov = NULL, n.start = 100, start.innov = NULL, rand.gen = rnorm, 
+rseed = NULL, ...) 
 {   # A function implemented by Diethelm Wuertz
 
     # Description:
@@ -110,9 +111,13 @@ innov = NULL, n.start = 100, start.innov = NULL, rand.gen = rnorm, ...)
     
     # FUNCTION:
     
-    # Simulate:
+    # Checks:
     if (!is.list(model)) 
-    	stop("model must be list")
+    	stop("model must be a list")
+    	
+    # Simulate:
+    if (is.integer(rseed)) 
+    	set.seed(rseed)
     if (is.null(innov)) 
     	innov = rand.gen(n, ...)
     n = length(innov) 
@@ -274,22 +279,27 @@ title = NULL, description = NULL, ...)
         if (include.mean) {
             coeff = c(fit$coef, fit$x.mean)
             names(coeff) = c(names(fit$coef), "intercept") 
-            fit$coef = coeff} 
+            fit$coef = coeff
+        } 
         if (method == "ols") { 
             fit$se.coef = fit$asy.se.coef
             n = sqrt(length(as.vector(fit$se.coef)))
-            fit$var.coef = matrix(rep(NA, times = n*n), ncol = n) }
-        else { 
+            fit$var.coef = matrix(rep(NA, times = n*n), ncol = n) 
+        } else { 
             fit$var.coef = fit$asy.var.coef
             fit$se.coef = sqrt(diag(fit$asy.var.coef))  
             if (include.mean) {        
                 m = dim(fit$asy.var.coef)[1] + 1
                 var.coef = matrix(rep(NA, times = m*m), m, m)
                 for ( i in 1:(m-1) ) { 
-                    for( j in 1:(m-1) ) {
-                        var.coef[i,j] = fit$var.coef[i,j] } }
+                    for ( j in 1:(m-1) ) {
+                        var.coef[i,j] = fit$var.coef[i,j] 
+                    } 
+                }
                 fit$var.coef = var.coef
-                fit$se.coef = c(fit$se.coef, NA) } }
+                fit$se.coef = c(fit$se.coef, NA) 
+            } 
+        }
         fit$x = x
         # Return Value:
         fit } }
@@ -892,7 +902,7 @@ function(x, ...)
         "\n", sep = "")
       
     # Model: 
-    cat("\nModel:\n", object$tstitle, "\n", sep = "")
+    cat("\nModel:\n", object$title, "\n", sep = "")
     
     # Coefficients:
     cat("\nCoefficient(s):\n")

@@ -94,7 +94,7 @@
 
 
 \usage{
-fbmSim((n = 100, H = 0.7, method = c("mvn", "chol", "lev", "circ", "wave"),
+fbmSim(n = 100, H = 0.7, method = c("mvn", "chol", "lev", "circ", "wave"),
 	waveJ = 7, doplot = TRUE, fgn = FALSE)
 fgnSim(n = 1000, H = 0.7, method = c("beran", "durbin", "paxson"))
 farimaSim(n = 1000, model = list(ar = c(0.5, -0.5), d = 0.3, ma = 0.1),
@@ -118,7 +118,7 @@ pengFit(x, levels = 50, minnpts = 3, cut.off = 10^c(0.7, 2.5),
 	doplot = FALSE, trace = FALSE, title = NULL, description = NULL)
 rsFit(x, levels = 50, minnpts = 3, cut.off = 10^c(0.7, 2.5), 
 	doplot = FALSE, trace = FALSE, title = NULL, description = NULL)
-perFitx, cut.off = 0.1, method = c("per", "cumper"), 
+perFit(x, cut.off = 0.1, method = c("per", "cumper"), 
 	doplot = FALSE, title = NULL, description = NULL)
 boxperFit(x, nbox = 100, cut.off = 0.10, 
 	doplot = FALSE, trace = FALSE, title = NULL, description = NULL)	  

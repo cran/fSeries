@@ -92,18 +92,6 @@
 #
 
 
-################################################################################
-# garchOx:
-
-
-	# The functions can be found in "funSeries.R"
-	# Windows Only, adapt it under Linux ...
-    OXBIN <<- "C:/Ox/bin"
-    OXCMD <<- "C:\\Ox\\bin\\oxl.exe library\\fSeries\\libs\\GarchOx.ox"
-    # Creates Files: "OxParameter.txt", "OxSeries.csv", "OxSeries.csv"
-    ###
-
-
 ################################################################################ 
 # Data:
 

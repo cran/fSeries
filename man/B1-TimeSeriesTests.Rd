@@ -47,7 +47,7 @@
 
 
 \usage{
-bdsTest(x, m = 3, eps = NULL, title = NULL, description = NULL) )
+bdsTest(x, m = 3, eps = NULL, title = NULL, description = NULL) 
 tnnTest(x, lag = 1, title = NULL, description = NULL) 
 wnnTest(x, lag = 1, qstar = 2, q = 10, range = 4, title = NULL, description = NULL) 
 }

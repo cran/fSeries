@@ -84,7 +84,10 @@ description = NULL)
 		fit$garch.orders = as.numeric(strsplit(strsplit(strsplit(
 		as.character(formula.var), 
 			"\\(")[[2]][2], "\\)")[[1]], ",")[[1]]) 
-	}	
+	}
+	# Note: We use GARCH(p,q) order with alpha(p) and beta(q) !!!
+	# DW: 2005-05-16
+	# fit$garch.orders = rev(fit$garch.orders)	
 	
 	# ARCH-IN-MEAN ?
 	arch.in.mean = 0
@@ -105,8 +108,9 @@ description = NULL)
 	ident = paste(selected, as.character(floor(runif(1)*10000)), sep = "")
 											
 	# Write parameters to file - OxParameter.txt:
-	parameters = c(fit$csts, distri, fit$arma.orders, fit$arfima, 
-		fit$garch.orders, fit$model, fit$arch.in.mean, truncation, nt)	
+	parameters = c(csts = fit$csts, distri = distri, arma = fit$arma.orders, 
+		arfima = fit$arfima, garch = fit$garch.orders, model = fit$model, 
+		inmean = fit$arch.in.mean, trunc = truncation, nt = nt)	
 	write(x = parameters, file = "OxParameter.txt")	
 	
 	# Write data to file - OxSeries:
@@ -155,6 +159,10 @@ function(x, digits = max(3, getOption("digits") - 3), ...)
     # Call:
     cat("\nTitle:\n")
     cat(object$title, "\n")
+    
+    # Note: We use GARCH(p,q) order with alpha(p) and beta(q) !!!
+	# DW: 2005-05-16 
+    # object$garch.orders = rev(object$garch.orders)
     
     # Mean and variance Equation:
     cat("\nMean Equation:\n")
